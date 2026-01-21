@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>新春肥牛飼養大賽 | Compact Team Dashboard</title>
+    <title>新春肥牛飼養大賽 | Ultimate Compact Dashboard</title>
     <!-- CSS & Frameworks -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -16,14 +16,14 @@
             border-radius: 0.5rem; background-color: #f3f4f6; border: 2px solid #fff; 
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
         }
-        .cow-image-container img { width: 100%; height: 100%; object-fit: contain; transition: transform 0.3s ease; }
+        .cow-image-container img { width: 100%; height: 100%; object-fit: contain; }
         .fence-bg {
             background-color: #81C784;
             background-image: radial-gradient(#A5D6A7 15%, transparent 16%), radial-gradient(#A5D6A7 15%, transparent 16%);
             background-size: 20px 20px; background-position: 0 0, 10px 10px;
         }
         .rank-badge { display: flex; align-items: center; justify-content: center; font-weight: 900; box-shadow: 0 2px 4px rgba(0,0,0,0.3); z-index: 50; }
-        .brand-badge { font-size: 0.65rem; padding: 1px 6px; border-radius: 9999px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
+        .brand-badge { font-size: 0.65rem; padding: 1px 6px; border-radius: 9999px; font-weight: 700; text-transform: uppercase; }
         .brand-Dermes { background-color: #e0f2fe; color: #0369a1; border: 1px solid #bae6fd; }
         .brand-Reenex { background-color: #f0fdf4; color: #15803d; border: 1px solid #bbf7d0; }
         .brand-Elyze { background-color: #fdf4ff; color: #a21caf; border: 1px solid #f5d0fe; }
@@ -31,7 +31,6 @@
         .tab-active-Reenex { background-color: #15803d; color: white; border-color: #15803d; }
         .tab-active-Elyze { background-color: #a21caf; color: white; border-color: #a21caf; }
         
-        /* Subtle Progress background in cards */
         .strength-bar { 
             position: absolute; left: 0; top: 0; height: 100%; opacity: 0.12; 
             transition: width 1.2s cubic-bezier(0.34, 1.56, 0.64, 1); z-index: 0; 
@@ -53,7 +52,7 @@
         const i18n = {
             zh: {
                 utilizeAi: "利用 AI 小店", make: "令", cust: "客人", bannerSlogan: "做任務贏取飼料 儲糧養肥牛",
-                leaderboardTitle: "肥牛牧場排行榜", loading: "正在讀取數據...", tierTitle: "牛牛進化階級與獎項",
+                leaderboardTitle: "肥牛排行榜", loading: "正在讀取數據...", tierTitle: "等級與獎項",
                 feedGuideTitle: "飼料獲取攻略", startWeightLabel: "起始體重", ratioLabel: "成長換算",
                 searchTitle: "搜尋我的牛牛", allBrands: "所有品牌", allLocations: "所有樓層",
                 cardWeightLabel: "目前體重", cardFeedLabel: "累積飼料", unlockedTitle: "目前可獲獎勵",
@@ -67,26 +66,26 @@
             },
             en: {
                 utilizeAi: "Utilizing AI Shop", make: "Turning", cust: "Customers", bannerSlogan: "Complete Tasks to Grow Your Cow",
-                leaderboardTitle: "Fat Cow Leaderboard", loading: "Loading...", tierTitle: "Cow Tiers & Prizes",
+                leaderboardTitle: "Fat Cow Ranking", loading: "Loading...", tierTitle: "Cow Tiers & Prizes",
                 feedGuideTitle: "Feed Acquisition Guide", startWeightLabel: "Start Weight", ratioLabel: "Ratio",
                 searchTitle: "Search My Cow", allBrands: "All Brands", allLocations: "All Floors",
-                cardWeightLabel: "Weight", cardFeedLabel: "Feeds", unlockedTitle: "Current Reward",
+                cardWeightLabel: "Weight", cardFeedLabel: "Feeds", unlockedTitle: "Unlocked Reward",
                 task1: "Add 5 shop followers", task2: "Add 1 ACB as owner", task3: "Red Packet from shop (Max 25)", 
                 task4: "Drive ACB to refer friends for $1,888",
                 tLabel1: "Follows", tLabel2: "ACB Owner", tLabel3: "Packets", tLabel4: "Drive ACB",
                 goal: "Goal", maxLevel: "Max Level", feedsToUpgrade: "{n} feeds needed", congrats: "Golden Cow Raised!",
-                noMatch: "No matches", floorRankTitle: "Floor Board", avgWeight: "Avg Weight",
+                noMatch: "No matches", floorRankTitle: "Brand Floor Board", avgWeight: "Avg Weight",
                 modalTitle: "Task Legend", modalClose: "Got it", btnExplain: "Legend", distTitle: "Dist",
                 hcLabel: "HC"
             }
         };
 
         const MILESTONES = [
-            { min: 300, max: 499, title: {zh: "瘦牛", en: "Lean Cow"}, color: "text-gray-400", barColor: "bg-gray-400", img: "https://i.postimg.cc/pdy5zLJq/Whats-App-Image-2026-01-16-at-15-00-48.jpg", reward: { zh: "繼續努力！加油！", en: "Keep trying!" } }, 
-            { min: 500, max: 599, title: {zh: "信望愛澳洲牛", en: "FHL Australian Beef"}, color: "text-green-700", barColor: "bg-green-500", img: "https://i.postimg.cc/52sFXCLL/Whats-App-Image-2026-01-16-at-15-01-13.jpg", reward: { zh: "Bicelle B5 3D MASK X5", en: "Bicelle B5 3D MASK X5" } }, 
-            { min: 600, max: 699, title: {zh: "公義美國穀飼牛", en: "Righteous US Beef"}, color: "text-blue-700", barColor: "bg-blue-500", img: "https://i.postimg.cc/9QLqD7ZP/Whats-App-Image-2026-01-16-at-15-00-50.jpg", reward: { zh: "Exuviance AP25 (4對)", en: "Exuviance AP25 (4 pairs)" } }, 
-            { min: 700, max: 799, title: {zh: "平安日本和牛", en: "Japanese Wagyu"}, color: "text-purple-700", barColor: "bg-purple-500", img: "https://i.postimg.cc/Bnm1jKH1/Whats-App-Image-2026-01-16-at-15-00-49.jpg", reward: { zh: "Celluion 活性膠原組合", en: "Celluion Collagen Kit" } }, 
-            { min: 800, max: 99999, title: {zh: "喜樂豐盛金牛", en: "Abundant Golden Cow"}, color: "text-yellow-700 font-black", barColor: "bg-yellow-500", img: "https://i.postimg.cc/2S0B1Zhv/Whats-App-Image-2026-01-16-at-15-00-49-(1).jpg", reward: { zh: "Celluion 超聲波 PLLA 5套裝", en: "Celluion Ultrasonic PLLA" } } 
+            { min: 300, max: 499, title: {zh: "瘦牛", en: "Lean Cow"}, color: "text-gray-400", barColor: "bg-gray-400", img: "https://i.postimg.cc/pdy5zLJq/Whats-App-Image-2026-01-16-at-15-00-48.jpg", reward: { zh: "繼續努力！", en: "Keep trying!" } }, 
+            { min: 500, max: 599, title: {zh: "澳洲牛", en: "Aus Beef"}, color: "text-green-700", barColor: "bg-green-500", img: "https://i.postimg.cc/52sFXCLL/Whats-App-Image-2026-01-16-at-15-01-13.jpg", reward: { zh: "Bicelle Mask X5", en: "Bicelle Mask X5" } }, 
+            { min: 600, max: 699, title: {zh: "美國牛", en: "US Beef"}, color: "text-blue-700", barColor: "bg-blue-500", img: "https://i.postimg.cc/9QLqD7ZP/Whats-App-Image-2026-01-16-at-15-00-50.jpg", reward: { zh: "Exuviance AP25 (4對)", en: "Exuviance AP25" } }, 
+            { min: 700, max: 799, title: {zh: "和牛", en: "Wagyu"}, color: "text-purple-700", barColor: "bg-purple-500", img: "https://i.postimg.cc/Bnm1jKH1/Whats-App-Image-2026-01-16-at-15-00-49.jpg", reward: { zh: "Celluion 活性膠原組合", en: "Celluion Kit" } }, 
+            { min: 800, max: 99999, title: {zh: "金牛", en: "Golden"}, color: "text-yellow-700 font-black", barColor: "bg-yellow-500", img: "https://i.postimg.cc/2S0B1Zhv/Whats-App-Image-2026-01-16-at-15-00-49-(1).jpg", reward: { zh: "Celluion 超聲波 PLLA", en: "Ultrasonic PLLA" } } 
         ];
 
         function getCowStatus(w) { return MILESTONES.find(m => w >= m.min && w <= m.max) || MILESTONES[0]; }
@@ -101,20 +100,19 @@
     </script>
 
     <!-- Language Switcher -->
-    <div class="fixed top-4 right-4 z-[100] flex gap-1 bg-white/90 backdrop-blur-md p-1 rounded-full shadow-lg border border-gray-100">
+    <div class="fixed top-4 right-4 z-[100] flex gap-1 bg-white/90 backdrop-blur-md p-1.5 rounded-full shadow-lg border border-gray-100">
         <button onclick="changeLanguage('zh')" id="btn-zh" class="px-4 py-1.5 rounded-full text-sm font-black transition-all bg-red-600 text-white shadow-md">中</button>
         <button onclick="changeLanguage('en')" id="btn-en" class="px-4 py-1.5 rounded-full text-sm font-black text-gray-500 hover:bg-gray-100">EN</button>
     </div>
 
-    <!-- Header Image -->
+    <!-- Header Poster -->
     <div class="relative w-screen ml-[calc(-50vw+50%)]">
         <img src="https://i.postimg.cc/dVZ3Wyrh/Whats-App-Image-2026-01-16-at-13-05-41.jpg" alt="Poster" class="w-full h-auto block">
     </div>
 
     <!-- Intro Header Section -->
-    <div class="relative w-screen ml-[calc(-50vw+50%)] shadow-2xl overflow-hidden bg-red-900 group flex items-center justify-center py-8 border-b-4 border-yellow-500 text-center md:text-left">
+    <div class="relative w-screen ml-[calc(-50vw+50%)] shadow-2xl overflow-hidden bg-red-900 group flex items-center justify-center py-6 border-b-4 border-yellow-500 text-center md:text-left">
         <div class="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-red-800 to-red-950 z-0"></div>
-        <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-30 mix-blend-overlay"></div>
         <div class="relative z-10 w-full max-w-7xl px-4 sm:px-8 md:px-20 text-white flex flex-col md:flex-row items-center justify-between gap-6 md:gap-10">
             <div class="flex-1 flex flex-col justify-center space-y-2">
                 <div class="inline-flex items-center justify-center md:justify-start gap-2 mb-1">
@@ -124,7 +122,6 @@
                 <h2 class="text-5xl sm:text-6xl lg:text-8xl font-black leading-none drop-shadow-2xl tracking-tighter">
                     <span id="txt-make">令</span><span class="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-orange-300 to-yellow-300 animate-pulse">20,000</span><span id="txt-cust">客人</span>
                 </h2>
-                <p id="txt-best-promoter" class="text-2xl sm:text-3xl font-black opacity-90 tracking-widest text-yellow-50 uppercase mt-1">變成最強推廣者</p>
                 <div class="mt-4 inline-block bg-white/10 backdrop-blur-md border border-white/20 px-6 py-3 rounded-2xl shadow-xl text-center">
                     <p id="txt-banner-slogan" class="text-2xl sm:text-3xl font-black text-yellow-400 tracking-wider">做任務贏取飼料 儲糧養肥牛</p>
                 </div>
@@ -135,27 +132,27 @@
         </div>
     </div>
 
-    <!-- Leaderboard -->
-    <section class="px-2 pb-12 relative z-0 fence-bg pt-12 shadow-inner text-center">
+    <!-- Top 10 Leaderboard (COMPACTED) -->
+    <section class="px-2 pb-10 relative z-0 fence-bg pt-10 shadow-inner text-center">
         <div class="w-full max-w-[98%] mx-auto relative z-10">
-           <div class="flex flex-col items-center justify-center gap-4 mb-14">
-                <div class="flex items-center gap-6 bg-white/25 backdrop-blur-md px-10 md:px-16 py-6 md:py-10 rounded-[4rem] border-2 border-white/60 shadow-2xl transition-all duration-500 hover:scale-[1.02]">
-                    <i data-lucide="trophy" class="w-12 h-12 md:w-24 md:h-24 text-yellow-300 drop-shadow-[0_0_25px_rgba(253,224,71,0.7)]"></i>
-                    <h2 id="txt-leaderboard-title" class="font-black text-white text-5xl md:text-9xl tracking-tighter">肥牛牧場排行榜</h2>
+           <div class="flex flex-col items-center justify-center gap-2 mb-10">
+                <div class="flex items-center gap-4 bg-white/25 backdrop-blur-md px-8 py-4 rounded-full border-2 border-white/60 shadow-2xl">
+                    <i data-lucide="trophy" class="w-8 h-8 md:w-16 md:h-16 text-yellow-300 drop-shadow-[0_0_15px_rgba(253,224,71,0.7)]"></i>
+                    <h2 id="txt-leaderboard-title" class="font-black text-white text-3xl md:text-7xl tracking-tighter">肥牛排行榜</h2>
                 </div>
-                <div class="bg-red-600/90 text-white px-12 py-3 rounded-full text-3xl md:text-5xl font-black animate-pulse mt-8 shadow-2xl border-4 border-red-300/40">LIVE UPDATE</div>
+                <div class="bg-red-600/90 text-white px-8 py-1.5 rounded-full text-lg md:text-3xl font-black animate-pulse shadow-xl">LIVE UPDATE</div>
            </div>
 
-           <div id="loading-indicator" class="flex flex-col items-center justify-center py-16">
-               <div class="w-16 h-16 border-8 border-yellow-400 border-t-transparent rounded-full animate-spin mb-6"></div>
-               <p id="txt-loading" class="text-white text-2xl font-black animate-pulse tracking-widest">正在讀取牧場數據...</p>
+           <div id="loading-indicator" class="flex flex-col items-center justify-center py-10">
+               <div class="w-12 h-12 border-4 border-yellow-400 border-t-transparent rounded-full animate-spin mb-4"></div>
+               <p id="txt-loading" class="text-white text-xl font-black animate-pulse">正在讀取牧場數據...</p>
            </div>
 
-           <div id="leaderboard-grid" class="grid grid-cols-2 md:grid-cols-3 gap-x-6 gap-y-16 px-2 lg:px-16"></div>
+           <div id="leaderboard-grid" class="grid grid-cols-2 md:grid-cols-3 gap-x-3 gap-y-10 px-1 lg:px-16"></div>
         </div>
     </section>
 
-    <!-- Combined Floor Intelligence Board (Compact Optimization) -->
+    <!-- Combined Floor Intelligence Board (Compact) -->
     <section class="px-2 py-10 relative z-10 bg-white border-t border-b border-gray-100 shadow-sm overflow-hidden">
         <div class="max-w-4xl mx-auto">
             <div class="text-center mb-6 px-4">
@@ -168,13 +165,12 @@
             </div>
 
             <!-- Brand Selection Tabs -->
-            <div class="flex justify-center p-1.5 bg-gray-100 rounded-[2.5rem] mb-8 shadow-inner max-w-sm mx-auto border border-gray-200">
+            <div class="flex justify-center p-1.5 bg-gray-200/50 rounded-[2.5rem] mb-8 shadow-inner max-w-sm mx-auto border border-gray-200">
                 <button onclick="switchRankBrand('Dermes')" id="tab-Dermes" class="flex-1 py-3 px-2 rounded-[2rem] text-xs md:text-base font-black transition-all tab-active-Dermes shadow-md">Dermes</button>
                 <button onclick="switchRankBrand('Reenex')" id="tab-Reenex" class="flex-1 py-3 px-2 rounded-[2rem] text-xs md:text-base font-black transition-all text-gray-500">Reenex</button>
                 <button onclick="switchRankBrand('Elyze')" id="tab-Elyze" class="flex-1 py-3 px-2 rounded-[2rem] text-xs md:text-base font-black transition-all text-gray-500">Elyze</button>
             </div>
 
-            <!-- Compact Combined Content -->
             <div id="combined-floor-content" class="space-y-3 px-1 min-h-[400px]"></div>
         </div>
     </section>
@@ -191,21 +187,22 @@
         </div>
     </div>
 
-    <!-- Tier & Guide -->
-    <section class="px-3 py-16 relative z-10 bg-[#FFF3E0]">
-        <div class="max-w-lg mx-auto">
-             <div class="mb-14 shadow-2xl rounded-3xl overflow-hidden border-4 border-[#8D6E63] bg-white relative text-center">
-                 <h4 class="font-black text-[#5D4037] text-2xl p-5 bg-[#FFECB3] border-b-2 border-[#8D6E63] flex items-center justify-center gap-3 tracking-wide uppercase">
-                    <i data-lucide="award" class="w-8 h-8 text-yellow-700"></i> <span id="txt-tier-title">牛牛進化階級與獎項</span>
+    <!-- Tier & Guide (Compact) -->
+    <section class="px-3 py-10 relative z-10 bg-[#FFF3E0]">
+        <div class="max-w-md mx-auto space-y-8">
+             <div class="shadow-xl rounded-2xl overflow-hidden border-4 border-[#8D6E63] bg-white relative">
+                 <h4 class="font-black text-[#5D4037] text-lg p-3 bg-[#FFECB3] border-b-2 border-[#8D6E63] flex items-center justify-center gap-2 uppercase tracking-wide">
+                    <i data-lucide="award" class="w-5 h-5 text-yellow-700"></i> <span id="txt-tier-title">等級與獎項</span>
                  </h4>
-                 <div id="tier-list-container" class="p-6 space-y-6 relative z-10"></div>
+                 <div id="tier-list-container" class="divide-y divide-gray-100"></div>
              </div>
-             <div class="bg-white rounded-[2.5rem] p-8 shadow-2xl border-4 border-orange-200 mb-8 relative overflow-hidden">
-                 <h4 class="font-black text-orange-900 text-2xl mb-8 flex items-center gap-4 border-b-2 border-orange-100 pb-4">
+
+             <div class="bg-white rounded-[2rem] p-6 shadow-2xl border-4 border-orange-200 relative overflow-hidden">
+                 <h4 class="font-black text-orange-900 text-xl mb-6 flex items-center gap-4 border-b-2 border-orange-100 pb-4">
                     <i data-lucide="flame" class="w-8 h-8 text-red-500 fill-red-500"></i> <span id="txt-feed-guide-title">飼料獲取攻略</span>
                  </h4>
-                 <div id="tasks-container" class="space-y-6"></div>
-                 <div class="mt-10 bg-gradient-to-br from-orange-100 via-orange-50 to-orange-100 rounded-3xl p-6 text-center shadow-inner border border-orange-200">
+                 <div id="tasks-container" class="grid grid-cols-2 gap-3 text-left"></div>
+                 <div class="mt-8 bg-gradient-to-br from-orange-100 via-orange-50 to-orange-100 rounded-3xl p-6 text-center shadow-inner border border-orange-200">
                      <div class="flex justify-around items-center">
                          <div class="flex flex-col"><span id="txt-start-weight-label" class="text-xs text-orange-800 font-black uppercase tracking-widest">起始體重</span><span class="text-3xl font-black text-red-600">300kg</span></div>
                          <div class="h-12 w-0.5 bg-orange-300/50"></div>
@@ -216,7 +213,7 @@
         </div>
     </section>
 
-    <!-- Search My Cow Section -->
+    <!-- Search My Cow (Compact) -->
     <section class="px-4 py-16 bg-white border-t border-gray-100 relative shadow-inner">
          <div class="max-w-md mx-auto">
              <h2 class="text-center font-black text-gray-800 text-2xl mb-8 flex items-center justify-center gap-3">
@@ -235,30 +232,27 @@
              </div>
              <div class="relative mb-8"><select id="user-select" class="block w-full px-5 py-4 border-2 border-red-100 rounded-[1.5rem] bg-white text-gray-900 focus:border-red-500 font-black shadow-lg appearance-none"></select></div>
              
-             <!-- Individual Result Card -->
-             <div id="user-card" class="bg-[#FFF8E1] rounded-[2.5rem] p-6 border-4 border-[#8D6E63] relative hidden shadow-2xl animate-modal">
-                <div class="absolute top-4 left-4 w-3 h-3 rounded-full bg-[#5D4037]"></div><div class="absolute top-4 right-4 w-3 h-3 rounded-full bg-[#5D4037]"></div><div class="absolute bottom-4 left-4 w-3 h-3 rounded-full bg-[#5D4037]"></div><div class="absolute bottom-4 right-4 w-3 h-3 rounded-full bg-[#5D4037]"></div>
-                <div class="flex justify-between items-start mb-6">
-                    <div><div class="flex gap-2 mb-2"><span id="card-brand" class="brand-badge text-xs">BRAND</span><span id="card-location" class="bg-[#8D6E63] text-white px-3 py-1 rounded-full text-xs font-black shadow-sm">LOC</span></div><h3 id="card-name" class="text-3xl font-black text-[#3E2723] tracking-tighter">姓名</h3></div>
-                    <span id="card-rank" class="bg-yellow-400 text-yellow-900 px-4 py-2 rounded-2xl text-2xl font-black shadow-xl transform rotate-3 border-4 border-white ring-2 ring-yellow-300"># -</span>
+             <div id="user-card" class="bg-[#FFF8E1] rounded-[2rem] p-4 border-4 border-[#8D6E63] relative hidden shadow-2xl animate-modal overflow-hidden">
+                <div class="flex items-start gap-4 mb-4 relative z-10">
+                    <div class="w-24 h-18 shrink-0 cow-image-container border-2 border-white shadow-md"><img id="card-cow-img" src="" alt="Cow"></div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex justify-between items-start mb-1"><h3 id="card-name" class="text-2xl font-black text-[#3E2723] tracking-tighter truncate">姓名</h3><span id="card-rank" class="bg-yellow-400 text-yellow-900 px-2 py-0.5 rounded-lg text-sm font-black shadow-md border-2 border-white"># -</span></div>
+                        <div class="flex gap-1 mb-2"><span id="card-brand" class="brand-badge text-[8px]">BRAND</span><span id="card-location" class="bg-[#8D6E63] text-white px-2 py-0.5 rounded-full text-[8px] font-black uppercase shadow-sm">LOC</span></div>
+                        <div class="flex items-baseline gap-2"><span id="card-weight" class="text-3xl font-black text-red-600 leading-none">0kg</span><span id="card-level-title" class="text-[10px] font-black text-[#8D6E63] uppercase tracking-tighter truncate">等級</span></div>
+                    </div>
                 </div>
-                <div class="cow-image-container mb-6 border-4 border-white shadow-xl rounded-2xl"><img id="card-cow-img" src="" alt="Cow Image" onerror="this.src='https://placehold.co/640x480?text=Loading';"></div>
-                <div class="grid grid-cols-2 gap-4 mb-6">
-                    <div class="bg-white p-4 rounded-3xl text-center border-2 border-[#FFE082] shadow-md"><span id="txt-card-weight-label" class="block text-[11px] text-[#8D6E63] font-black uppercase tracking-widest mb-1">目前體重</span><span id="card-weight" class="block text-2xl font-black text-red-600">0kg</span></div>
-                    <div class="bg-white p-4 rounded-3xl text-center border-2 border-[#FFE082] shadow-md"><span id="txt-card-feed-label" class="block text-[11px] text-[#8D6E63] font-black uppercase tracking-widest mb-1">累積飼料</span><span id="card-feeds" class="block text-2xl font-black text-orange-500">0份</span></div>
+                <div id="unlocked-reward-panel" class="bg-yellow-50/80 rounded-xl p-2.5 border-2 border-yellow-200 mb-4 flex items-center gap-3 shadow-inner">
+                    <div class="w-8 h-8 bg-yellow-400 rounded-lg flex items-center justify-center shrink-0 border border-white shadow-sm"><i data-lucide="gift" class="w-4 h-4 text-white"></i></div>
+                    <div class="min-w-0 flex-1"><div class="text-[8px] text-yellow-700 font-black uppercase tracking-widest leading-none mb-1"><span id="txt-unlocked-title">目前獎勵</span></div><div id="card-reward-name" class="text-xs font-black text-gray-800 leading-tight truncate">Reward Info</div></div>
                 </div>
-                <div id="unlocked-reward-panel" class="bg-yellow-50/80 rounded-3xl p-5 border-2 border-yellow-200 mb-6 flex items-center gap-4 shadow-inner">
-                    <div class="w-12 h-12 bg-yellow-400 rounded-2xl flex items-center justify-center shrink-0 shadow-lg border-2 border-white"><i data-lucide="gift" class="w-7 h-7 text-white"></i></div>
-                    <div><div class="text-[10px] text-yellow-700 font-black uppercase tracking-[0.2em] mb-1"><span id="txt-unlocked-title">目前可獲獎勵</span></div><div id="card-reward-name" class="text-base font-black text-gray-800 leading-tight">Reward Info</div></div>
+                <div class="bg-white rounded-xl p-3 border-2 border-[#FFE082] mb-4 shadow-sm relative">
+                    <div class="flex justify-between text-[10px] font-black text-[#5D4037] mb-1"><span>PROGRESS</span><span id="card-next-level" class="text-red-500 italic">NEXT GOAL</span></div>
+                    <div class="w-full bg-gray-100 rounded-full h-1.5 overflow-hidden border border-gray-100 shadow-inner"><div id="card-progress-bar" class="bg-gradient-to-r from-green-400 via-green-500 to-green-600 h-full transition-all duration-1000 shadow-inner"></div></div>
+                    <p id="card-diff-text" class="text-[9px] text-center text-gray-400 mt-1 font-bold italic">努力中...</p>
                 </div>
-                <div class="bg-white rounded-3xl p-5 border-2 border-[#FFE082] mb-6 shadow-md">
-                    <div class="flex justify-between text-sm font-black text-[#5D4037] mb-2"><span id="card-level-title">等級</span><span id="card-next-level" class="text-red-500 italic">下級目標</span></div>
-                    <div class="w-full bg-gray-100 rounded-full h-4 overflow-hidden mb-2 border border-gray-200 shadow-inner"><div id="card-progress-bar" class="bg-gradient-to-r from-green-400 via-green-500 to-green-600 h-full transition-all duration-1000 shadow-inner"></div></div>
-                    <p id="card-diff-text" class="text-xs text-center text-gray-500 font-bold italic">努力中...</p>
-                </div>
-                <div class="border-t-4 border-[#D7CCC8] pt-6 border-dashed text-center">
-                    <h4 class="font-black text-[#5D4037] text-sm mb-4 flex items-center justify-center gap-2 bg-[#D7CCC8]/30 py-2 rounded-full mx-auto w-max px-6 uppercase tracking-widest"><i data-lucide="clipboard-list" class="w-4 h-4"></i> <span id="txt-report-card-title">任務成績單</span></h4>
-                    <div id="card-tasks-grid" class="grid grid-cols-2 gap-3 text-[11px]"></div>
+                <div class="border-t-2 border-[#D7CCC8] pt-4 border-dashed text-center">
+                    <h4 class="font-black text-[#5D4037] text-[10px] mb-3 flex items-center justify-center gap-2 bg-[#D7CCC8]/30 py-1 rounded-full mx-auto w-max px-4 uppercase tracking-widest"><i data-lucide="clipboard-list" class="w-3 h-3"></i> <span id="txt-report-card-title">任務成績單</span></h4>
+                    <div id="card-tasks-grid" class="grid grid-cols-2 gap-2 text-[10px]"></div>
                 </div>
              </div>
          </div>
@@ -272,35 +266,35 @@
             if (typeof i18n === 'undefined') return;
             const lang = i18n[window.currentLang];
             
-            // Text Localizations
             document.querySelectorAll("[id^='txt-']").forEach(el => {
                 const key = el.id.replace('txt-', '');
                 if (lang[key]) {
-                    if (el.id === 'txt-floor-rank-title') el.innerHTML = `<i data-lucide="shield-check" class="w-10 h-10 text-blue-600"></i> ${lang[key]}`;
+                    if (el.id === 'txt-floor-rank-title') el.innerHTML = `<i data-lucide="shield-check" class="w-8 h-8 md:w-16 md:h-16 text-blue-600"></i> ${lang[key]}`;
                     else el.textContent = lang[key];
                 }
             });
 
             if(document.getElementById('opt-all-brands')) document.getElementById('opt-all-brands').textContent = lang.allBrands;
+            if(document.getElementById('opt-all-locations')) document.getElementById('opt-all-locations').textContent = lang.allLocations;
 
-            // Legend Modal
             const modalCont = document.getElementById('modal-tasks-container');
             if(modalCont) {
                 const taskList = [{ icon: "👀", label: "Task 1", text: lang.task1 }, { icon: "🏪", label: "Task 2", text: lang.task2 }, { icon: "🧧", label: "Task 3", text: lang.task3 }, { icon: "🤝", label: "Task 4", text: lang.task4 }];
-                modalCont.innerHTML = taskList.map(t => `<div class="flex items-start gap-4 p-4 rounded-3xl bg-orange-50/50 border border-orange-100"><span class="text-3xl">${t.icon}</span><div><div class="text-[10px] text-orange-600 font-black uppercase mb-0.5">${t.label}</div><div class="text-sm font-bold text-gray-700 leading-tight">${t.text}</div></div></div>`).join('');
+                modalCont.innerHTML = taskList.map(t => `<div class="flex items-start gap-4 p-4 rounded-3xl bg-orange-50/50 border border-orange-100 text-left"><span class="text-3xl">${t.icon}</span><div><div class="text-[10px] text-orange-600 font-black uppercase mb-0.5">${t.label}</div><div class="text-sm font-bold text-gray-700 leading-tight">${t.text}</div></div></div>`).join('');
             }
 
-            // Condensed Tiers
             const tl = document.getElementById('tier-list-container');
             if(tl) {
-                tl.innerHTML = [...MILESTONES].reverse().map(m => `<div class="bg-white p-3 rounded-xl border border-gray-100 shadow-sm flex items-center gap-3"><div class="w-14 h-12 rounded-lg overflow-hidden shrink-0 bg-gray-50 border border-gray-100 shadow-inner"><img src="${m.img}" class="w-full h-full object-contain ${m.min < 500 ? 'grayscale' : ''}"></div><div class="flex-1 min-w-0 text-left"><div class="text-sm font-black text-gray-800 truncate">${m.title[window.currentLang]}</div><div class="text-xs font-black ${m.min >= 800 ? 'text-yellow-600' : 'text-gray-400'}">${m.min}kg+</div><div class="text-[9px] text-gray-400 truncate italic">${m.reward[window.currentLang]}</div></div></div>`).join('');
+                tl.innerHTML = [...MILESTONES].reverse().map((m, idx) => {
+                    const isGold = m.min >= 800;
+                    return `<div class="flex items-center gap-3 p-2 px-4 ${isGold ? 'bg-yellow-50' : 'bg-white'}"><div class="w-10 h-10 rounded-full overflow-hidden shrink-0 border-2 border-white shadow-sm bg-gray-50 flex items-center justify-center"><img src="${m.img}" class="w-full h-full object-contain ${m.min < 500 ? 'grayscale opacity-60' : ''}"></div><div class="flex-1 min-w-0 text-left"><div class="flex items-center justify-between gap-2"><span class="text-xs font-black text-gray-800 truncate">${m.title[window.currentLang]}</span><span class="text-[10px] font-black ${isGold ? 'text-yellow-600' : 'text-gray-400'} shrink-0">${m.min}kg+</span></div><div class="text-[9px] text-gray-500 truncate italic leading-tight">${m.reward[window.currentLang]}</div></div></div>`;
+                }).join('');
             }
 
-            // Task Guides
             const tc = document.getElementById('tasks-container');
             if(tc) {
                 const td = [{ icon: "👀", title: lang.task1, reward: "x1" }, { icon: "🏪", title: lang.task2, reward: "x2" }, { icon: "🧧", title: lang.task3, reward: "x2" }, { icon: "🤝", title: lang.task4, reward: "x3" }];
-                tc.innerHTML = td.map((t, i) => `<div class="flex items-center gap-3 bg-orange-50/30 p-3 rounded-xl border border-orange-100"><div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center text-xl shadow-sm shrink-0 border border-orange-50">${t.icon}</div><div class="flex-1 text-xs font-black text-gray-800 leading-tight text-left">${t.title}</div><div class="bg-orange-600 text-white px-2 py-1 rounded-lg font-black text-[10px] shrink-0 shadow-md">${t.reward}</div></div>`).join('');
+                tc.innerHTML = td.map((t, i) => `<div class="flex flex-col gap-2 bg-orange-50/40 p-3 rounded-2xl border border-orange-100 shadow-sm transition-all hover:bg-orange-50 group text-left"><div class="flex justify-between items-center"><span class="text-xl group-hover:scale-110 transition-transform">${t.icon}</span><span class="bg-orange-600 text-white px-2 py-0.5 rounded-lg font-black text-[10px] shadow-sm">${t.reward}</span></div><div class="text-[10px] font-black text-gray-700 leading-tight h-8 line-clamp-2">${t.title}</div></div>`).join('');
             }
 
             populateFilterOptions();
@@ -314,19 +308,17 @@
             window.currentRankBrand = b;
             ['Dermes', 'Reenex', 'Elyze'].forEach(tab => {
                 const btn = document.getElementById(`tab-${tab}`);
-                if(btn) btn.className = `flex-1 py-3 px-2 rounded-[2rem] text-xs md:text-base font-black transition-all ${tab === b ? `tab-active-${tab} shadow-md` : 'text-gray-500'}`;
+                if(btn) btn.className = `flex-1 py-3 px-2 rounded-[2rem] text-xs md:text-base font-black transition-all ${tab === b ? `tab-active-${tab} shadow-xl` : 'text-gray-400'}`;
             });
             renderCombinedFloorDashboard();
         }
 
-        // --- ULTRA COMPACT COMBINED DASHBOARD ENGINE ---
         function renderCombinedFloorDashboard() {
             const container = document.getElementById('combined-floor-content');
             if(!container) return;
             const lang = i18n[window.currentLang];
             const brand = window.currentRankBrand;
             const prefix = brand === 'Dermes' ? 'D' : brand === 'Reenex' ? 'R' : 'E';
-            
             const floorStats = {};
             window.USERS.forEach(u => {
                 const isBrand = u.brand.toLowerCase().includes(brand.toLowerCase());
@@ -342,7 +334,6 @@
                     if(mIdx !== -1) floorStats[loc].dist[mIdx]++;
                 }
             });
-
             const sorted = Object.entries(floorStats).map(([loc, d]) => {
                 const avg = Math.round(d.totalWeight / d.count);
                 const s = getCowStatus(avg);
@@ -350,52 +341,8 @@
                 let prg = 100; if(next) prg = Math.min(100, Math.max(0, ((avg - s.min) / (next.min - s.min)) * 100));
                 return { loc, avg, s, prg, t1: d.t1, t2: d.t2, t3: d.t3, t4: d.t4, dist: d.dist, total: d.count };
             }).sort((a, b) => b.avg - a.avg);
-
             const distColors = ['bg-gray-400', 'bg-green-500', 'bg-blue-500', 'bg-purple-500', 'bg-yellow-500'];
-
-            container.innerHTML = sorted.length > 0 ? sorted.map((f, idx) => `
-                <div class="relative flex flex-col p-3 rounded-2xl bg-white border border-gray-100 shadow-sm overflow-hidden group">
-                    <!-- Progress Bar Background (Subtle Background) -->
-                    <div class="strength-bar ${f.s.barColor}" style="width: ${f.prg}%"></div>
-                    
-                    <div class="flex items-center gap-3 z-10 relative">
-                        <!-- Left: Rank & Small Label -->
-                        <div class="flex flex-col items-center min-w-[35px] shrink-0">
-                            <span class="font-black text-gray-900 text-xs">${idx + 1}</span>
-                            <span class="font-black text-gray-500 text-[8px] uppercase tracking-tighter">${f.loc}</span>
-                        </div>
-                        
-                        <!-- Mid Left: Mini Cow Avatar -->
-                        <div class="w-12 h-10 rounded overflow-hidden shrink-0 border border-gray-50 shadow-inner bg-gray-50 flex items-center justify-center">
-                            <img src="${f.s.img}" class="w-full h-full object-contain">
-                        </div>
-
-                        <!-- Mid Right: Weight & Title -->
-                        <div class="flex-1 min-w-0">
-                            <div class="text-[8px] font-black uppercase tracking-widest ${f.s.color} truncate">${f.s.title[window.currentLang]}</div>
-                            <div class="text-2xl font-black ${idx === 0 ? 'text-orange-600' : 'text-gray-800'} tracking-tighter -mt-1 leading-none">
-                                ${f.avg}<span class="text-[8px] font-bold text-gray-400 uppercase ml-0.5 tracking-normal">kg</span>
-                            </div>
-                        </div>
-
-                        <!-- Right: Missions & HC (Vertical Compact) -->
-                        <div class="text-right shrink-0">
-                            <div class="text-[8px] font-black text-gray-300 uppercase leading-none mb-1">HC ${f.total}</div>
-                            <div class="flex gap-1.5 opacity-80 scale-90 origin-right">
-                                <span class="text-[9px]">👀${f.t1}</span><span class="text-[9px]">🏪${f.t2}</span><span class="text-[9px]">🧧${f.t3}</span><span class="text-[9px]">🤝${f.t4}</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Minimalist Distribution Strip (Integrated Line) -->
-                    <div class="z-10 mt-1.5 w-full h-1 flex rounded-full overflow-hidden bg-gray-100 shadow-inner">
-                        ${f.dist.map((c, i) => {
-                            if(c === 0) return '';
-                            const pct = (c/f.total)*100;
-                            return `<div class="${distColors[i]} h-full border-r border-white/30 last:border-0" style="width: ${pct}%"></div>`;
-                        }).join('')}
-                    </div>
-                </div>`).join('') : `<p class="text-gray-400 text-[10px] italic text-center py-10">找不到數據。</p>`;
+            container.innerHTML = sorted.length > 0 ? sorted.map((f, idx) => `<div class="relative flex flex-col p-3 rounded-2xl bg-white border border-gray-100 shadow-sm overflow-hidden group text-left"><div class="strength-bar ${f.s.barColor}" style="width: ${f.prg}%"></div><div class="flex items-center gap-3 z-10 relative"><div class="flex flex-col items-center min-w-[35px] shrink-0 text-center"><span class="font-black text-gray-900 text-xs">${idx + 1}</span><span class="font-black text-gray-500 text-[8px] uppercase tracking-tighter">${f.loc}</span></div><div class="w-12 h-10 rounded overflow-hidden shrink-0 border border-gray-50 shadow-inner bg-gray-50 flex items-center justify-center"><img src="${f.s.img}" class="w-full h-full object-contain"></div><div class="flex-1 min-w-0"><div class="text-[8px] font-black uppercase tracking-widest ${f.s.color} truncate">${f.s.title[window.currentLang]}</div><div class="text-2xl font-black ${idx === 0 ? 'text-orange-600' : 'text-gray-800'} tracking-tighter -mt-1 leading-none">${f.avg}<span class="text-[8px] font-bold text-gray-400 uppercase ml-0.5 tracking-normal">kg</span></div></div><div class="text-right shrink-0"><div class="text-[8px] font-black text-gray-300 uppercase leading-none mb-1">HC ${f.total}</div><div class="flex gap-1.5 opacity-80 scale-90 origin-right"><span class="text-[9px]">👀${f.t1}</span><span class="text-[9px]">🏪${f.t2}</span><span class="text-[9px]">🧧${f.t3}</span><span class="text-[9px]">🤝${f.t4}</span></div></div></div><div class="z-10 mt-1.5 w-full h-1 flex rounded-full overflow-hidden bg-gray-100 shadow-inner">${f.dist.map((c, i) => c === 0 ? '' : `<div class="${distColors[i]} h-full border-r border-white/30 last:border-0" style="width: ${(c/f.total)*100}%"></div>`).join('')}</div></div>`).join('') : `<p class="text-gray-400 text-[10px] italic text-center py-10">找不到數據。</p>`;
         }
 
         function populateFilterOptions() {
@@ -404,7 +351,7 @@
             const b = bS.value, prefix = b === 'Dermes' ? 'D' : b === 'Reenex' ? 'R' : b === 'Elyze' ? 'E' : null, cV = lS.value;
             let locs = [...new Set(window.USERS.map(u => u.location))].filter(l => l).sort();
             if (prefix) locs = locs.filter(loc => loc.toUpperCase().startsWith(prefix));
-            lS.innerHTML = `<option value="">樓層</option>`;
+            lS.innerHTML = `<option value="">所有樓層</option>`;
             locs.forEach(loc => { const opt = document.createElement('option'); opt.value = loc; opt.textContent = loc; lS.appendChild(opt); });
             if (locs.includes(cV)) lS.value = cV;
         }
@@ -425,39 +372,16 @@
             if (!user) return;
             const uCard = document.getElementById('user-card');
             if(!uCard) return;
-
             const rank = window.USERS.findIndex(u => u.id == userId) + 1, status = getCowStatus(user.weight), next = getNextMilestone(user.weight), lang = i18n[window.currentLang];
-            
             const safeSetText = (id, val) => { const el = document.getElementById(id); if(el) el.textContent = val; };
-            safeSetText('card-name', user.name);
-            safeSetText('card-rank', `# ${rank}`);
-            safeSetText('card-weight', `${user.weight}kg`);
-            safeSetText('card-feeds', `${user.feeds}${window.currentLang === 'zh' ? '份' : ''}`);
-            safeSetText('card-level-title', status.title[window.currentLang]);
-            safeSetText('card-reward-name', status.reward[window.currentLang]);
-            
-            const cBrand = document.getElementById('card-brand');
-            if(cBrand) { cBrand.textContent = user.brand; cBrand.className = `brand-badge brand-${user.brand} text-[9px]`; }
+            safeSetText('card-name', user.name); safeSetText('card-rank', `# ${rank}`); safeSetText('card-weight', `${user.weight}kg`); safeSetText('card-feeds', `${user.feeds}${window.currentLang === 'zh' ? '份' : ''}`); safeSetText('card-level-title', status.title[window.currentLang]);
+            const cBrand = document.getElementById('card-brand'); if(cBrand) { cBrand.textContent = user.brand; cBrand.className = `brand-badge brand-${user.brand} text-[9px]`; }
             safeSetText('card-location', user.location);
-            
-            const cardTasksGrid = document.getElementById('card-tasks-grid');
-            if(cardTasksGrid) cardTasksGrid.innerHTML = [{ label: lang.tLabel1, count: user.task1 }, { label: lang.tLabel2, count: user.task2 }, { label: lang.tLabel3, count: user.task3 }, { label: lang.tLabel4, count: user.task4 }].map(t => `<div class="bg-white p-2 rounded border border-[#D7CCC8] flex justify-between items-center shadow-sm"><span class="text-[#5D4037] font-black">${t.label}</span><span class="font-black text-white bg-[#8D6E63] px-2 py-0.5 rounded-full">${t.count}</span></div>`).join('');
-            
-            const cImg = document.getElementById('card-cow-img');
-            if(cImg) cImg.src = status.img;
-
-            const nextEl = document.getElementById('card-next-level'), prgEl = document.getElementById('card-progress-bar'), diffEl = document.getElementById('card-diff-text');
-            if (next) {
-                if(nextEl) nextEl.textContent = `${lang.goal}: ${next.title[window.currentLang]}`;
-                const prg = Math.min(100, Math.max(0, ((user.weight - status.min) / (next.min - status.min)) * 100));
-                if(prgEl) prgEl.style.width = `${prg}%`;
-                const feedsLeft = Math.round((next.min - user.weight) / 5);
-                if(diffEl) diffEl.innerHTML = lang.feedsToUpgrade.replace('{n}', `<span class="font-black text-red-600">${feedsLeft}</span>`);
-            } else { 
-                if(nextEl) nextEl.textContent = lang.maxLevel; 
-                if(prgEl) prgEl.style.width = "100%"; 
-                if(diffEl) diffEl.textContent = lang.congrats;
-            }
+            const cardTasksGrid = document.getElementById('card-tasks-grid'); if(cardTasksGrid) cardTasksGrid.innerHTML = [{ label: lang.tLabel1, count: user.task1 }, { label: lang.tLabel2, count: user.task2 }, { label: lang.tLabel3, count: user.task3 }, { label: lang.tLabel4, count: user.task4 }].map(t => `<div class="bg-white p-2 rounded border border-[#D7CCC8] flex justify-between items-center shadow-sm text-left"><span class="text-[#5D4037] font-black">${t.label}</span><span class="font-black text-white bg-[#8D6E63] px-2 py-0.5 rounded-full">${t.count}</span></div>`).join('');
+            const cImg = document.getElementById('card-cow-img'); if(cImg) cImg.src = status.img;
+            const nextEl = document.getElementById('card-next-level'), prgEl = document.getElementById('card-progress-bar'), diffEl = document.getElementById('card-diff-text'), rName = document.getElementById('card-reward-name');
+            if(rName) rName.textContent = status.reward[window.currentLang];
+            if (next) { if(nextEl) nextEl.textContent = `${lang.goal}: ${next.title[window.currentLang]}`; const prg = Math.min(100, Math.max(0, ((user.weight - status.min) / (next.min - status.min)) * 100)); if(prgEl) prgEl.style.width = `${prg}%`; const feedsLeft = Math.round((next.min - user.weight) / 5); if(diffEl) diffEl.innerHTML = lang.feedsToUpgrade.replace('{n}', `<span class="font-black text-red-600">${feedsLeft}</span>`); } else { if(nextEl) nextEl.textContent = lang.maxLevel; if(prgEl) prgEl.style.width = "100%"; if(diffEl) diffEl.textContent = lang.congrats; }
             uCard.classList.remove('hidden');
         }
 
@@ -467,14 +391,12 @@
                 const response = await fetch(window.GOOGLE_SCRIPT_URL);
                 const data = await response.json();
                 window.USERS = data.map(item => {
-                    const stats = calculateStats(parseInt(getProp(item, ["task1", "Task1"]))||0, parseInt(getProp(item, ["task2", "Task2"]))||0, parseInt(getProp(item, ["task3", "Task3"]))||0, parseInt(getProp(item, ["task4", "Task4"]))||0);
-                    return { id: parseInt(getProp(item, ["id", "ID"])) || 0, name: getProp(item, ["name", "Name"]), brand: getProp(item, ["brand", "Brand"]), location: getProp(item, ["location", "Location"]), task1: parseInt(getProp(item, ["task1", "Task1"]))||0, task2: parseInt(getProp(item, ["task2", "Task2"]))||0, task3: parseInt(getProp(item, ["task3", "Task3"]))||0, task4: parseInt(getProp(item, ["task4", "Task4"]))||0, feeds: stats.totalFeeds, weight: stats.weight };
+                    const t1 = parseInt(getProp(item, ["task1", "Task1"]))||0, t2 = parseInt(getProp(item, ["task2", "Task2"]))||0, t3 = parseInt(getProp(item, ["task3", "Task3"]))||0, t4 = parseInt(getProp(item, ["task4", "Task4"]))||0;
+                    const stats = calculateStats(t1, t2, t3, t4);
+                    return { id: parseInt(getProp(item, ["id", "ID"])) || 0, name: getProp(item, ["name", "Name"]), brand: getProp(item, ["brand", "Brand"]), location: getProp(item, ["location", "Location"]), task1: t1, task2: t2, task3: t3, task4: t4, feeds: stats.totalFeeds, weight: stats.weight };
                 }).filter(u => u.name).sort((a, b) => b.weight - a.weight);
                 updateUI(); 
-            } catch (error) {
-                console.error("Fetch error:", error);
-                if(loading) loading.innerHTML = `<p class="text-red-500 font-black px-6 text-sm italic">數據讀取失敗。</p>`;
-            } finally { if (loading) loading.classList.add('hidden'); }
+            } catch (error) { if(loading) loading.innerHTML = `<p class="text-red-500 font-black px-6 text-sm italic">數據讀取失敗。</p>`; } finally { if (loading) loading.classList.add('hidden'); }
         }
 
         function renderLeaderboard() {
@@ -484,10 +406,10 @@
             window.USERS.slice(0, 10).forEach((user, index) => {
                 const status = getCowStatus(user.weight);
                 const rank = index + 1;
-                let rs = rank === 1 ? "bg-yellow-400 text-white w-12 h-12 text-2xl border-4 border-white shadow-xl ring-2 ring-yellow-200" : rank <= 3 ? "bg-gray-300 text-white w-10 h-10 text-xl border-4 border-white shadow-lg" : "bg-white text-gray-600 w-8 h-8 text-lg border border-gray-200 shadow-md";
+                let rs = rank === 1 ? "bg-yellow-400 text-white w-10 h-10 text-xl border-4 border-white shadow-lg ring-2 ring-yellow-200" : rank <= 3 ? "bg-gray-300 text-white w-8 h-8 text-base border-2 border-white shadow-md" : "bg-white text-gray-600 w-6 h-6 text-xs border border-gray-200 shadow-sm";
                 const card = document.createElement('div');
                 card.className = "relative flex flex-col items-center group";
-                card.innerHTML = `<div class="cow-image-container mb-2 transition-all duration-300 relative shadow-2xl"><img src="${status.img}" alt="${status.title[window.currentLang]}" onerror="this.src='https://placehold.co/640x480?text=Loading';"><div class="absolute top-2 left-2 rounded-full flex items-center justify-center font-black rank-badge ${rs}">${rank}</div><div class="absolute bottom-2 right-2 bg-white/95 px-3 py-1 rounded text-sm font-black text-red-600 shadow-md ring-1 ring-red-100">${user.weight}kg</div></div><div class="bg-white/95 backdrop-blur-sm rounded-xl p-3 shadow-xl border-2 ${rank <= 3 ? 'border-yellow-200' : 'border-white'} text-center w-full relative z-30"><div class="text-lg font-black text-gray-800 truncate px-1 tracking-tighter leading-tight">${user.name}</div><div class="flex justify-center gap-1 mt-1 mb-1"><span class="brand-badge brand-${user.brand} scale-90">${user.brand}</span><span class="bg-gray-100 text-gray-500 text-[10px] px-2 rounded-full font-black flex items-center">${user.location}</span></div><div class="bg-gray-100 rounded-lg px-2 py-2 border border-gray-200/50 shadow-inner"><div class="text-xs font-black tracking-tighter leading-tight ${status.color}">${status.title[window.currentLang]}</div></div></div>`;
+                card.innerHTML = `<div class="cow-image-container mb-2 transition-all duration-300 relative shadow-2xl"><img src="${status.img}" alt="${status.title[window.currentLang]}" onerror="this.src='https://placehold.co/640x480?text=Loading';"><div class="absolute top-2 left-2 rounded-full flex items-center justify-center font-black rank-badge ${rs}">${rank}</div><div class="absolute bottom-2 right-2 bg-white/95 px-3 py-1 rounded text-sm font-black text-red-600 shadow-md ring-1 ring-red-100">${user.weight}kg</div></div><div class="bg-white/95 backdrop-blur-sm rounded-xl p-3 shadow-xl border-2 ${rank <= 3 ? 'border-yellow-200' : 'border-white'} text-center w-full relative z-30"><div class="text-[13px] font-black text-gray-800 truncate tracking-tighter leading-tight">${user.name}</div><div class="flex justify-center gap-1 mt-1 mb-1"><span class="brand-badge brand-${user.brand} scale-75">${user.brand}</span><span class="bg-gray-100 text-gray-500 text-[9px] px-2 rounded-full font-black flex items-center">${user.location}</span></div><div class="text-[10px] font-black tracking-tighter leading-tight ${status.color}">${status.title[window.currentLang]}</div></div>`;
                 grid.appendChild(card);
             });
         }
