@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sales Derby - 膠原飛輪跑</title>
     
-    <!-- Google Fonts: Orbitron for Headers, Teko for Numbers -->
+    <!-- Google Fonts: Fredoka (Cute), Orbitron (Racing) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Teko:wght@300;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;600;700&family=Orbitron:wght@400;700;900&family=Teko:wght@300;500;700&display=swap" rel="stylesheet">
     
     <!-- PapaParse for CSV Parsing (if needed for CSV fallback) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
@@ -20,6 +20,7 @@
             theme: {
                 extend: {
                     fontFamily: {
+                        'cute': ['"Fredoka"', 'sans-serif'],
                         'racing': ['"Orbitron"', 'sans-serif'],
                         'numbers': ['"Teko"', 'sans-serif'],
                     },
@@ -28,8 +29,20 @@
                         'f1-cyan': '#22d3ee',
                         'f1-slate': '#0f172a',
                     },
-                    backgroundImage: {
-                        'checkered-light': "repeating-linear-gradient(45deg, #e0f2fe 25%, transparent 25%, transparent 75%, #e0f2fe 75%, #e0f2fe), repeating-linear-gradient(45deg, #e0f2fe 25%, #f0f9ff 25%, #f0f9ff 75%, #e0f2fe 75%, #e0f2fe)",
+                    animation: {
+                        'bounce-slow': 'bounce 2s infinite',
+                        'float': 'float 3s ease-in-out infinite',
+                        'wiggle': 'wiggle 1s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        wiggle: {
+                            '0%, 100%': { transform: 'rotate(-3deg)' },
+                            '50%': { transform: 'rotate(3deg)' },
+                        }
                     }
                 }
             }
@@ -49,107 +62,136 @@
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
         
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-5px); }
+        /* Cow Bobbing Animation */
+        @keyframes gallop {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            25% { transform: translateY(-5px) rotate(-2deg); }
+            75% { transform: translateY(-2px) rotate(2deg); }
         }
-        .animate-bounce {
-            animation: bounce 1s infinite;
+        .animate-gallop {
+            animation: gallop 0.8s infinite ease-in-out;
         }
 
-        /* F1 Style Background Pattern */
+        /* --- THEME BACKGROUNDS --- */
+
+        /* 1. F1 Theme (Cool & Tech) */
         .bg-f1-pattern {
             background-color: #f0f9ff;
             background-image: 
                 linear-gradient(30deg, #e0f2fe 12%, transparent 12.5%, transparent 87%, #e0f2fe 87.5%, #e0f2fe),
-                linear-gradient(150deg, #e0f2fe 12%, transparent 12.5%, transparent 87%, #e0f2fe 87.5%, #e0f2fe),
-                linear-gradient(30deg, #e0f2fe 12%, transparent 12.5%, transparent 87%, #e0f2fe 87.5%, #e0f2fe),
-                linear-gradient(150deg, #e0f2fe 12%, transparent 12.5%, transparent 87%, #e0f2fe 87.5%, #e0f2fe),
-                linear-gradient(60deg, #e0f2fe77 25%, transparent 25.5%, transparent 75%, #e0f2fe77 75%, #e0f2fe77),
-                linear-gradient(60deg, #e0f2fe77 25%, transparent 25.5%, transparent 75%, #e0f2fe77 75%, #e0f2fe77);
+                linear-gradient(150deg, #e0f2fe 12%, transparent 12.5%, transparent 87%, #e0f2fe 87.5%, #e0f2fe);
             background-size: 80px 140px;
-            background-position: 0 0, 0 0, 40px 70px, 40px 70px, 0 0, 40px 70px;
         }
-        
-        /* Slanted Clip Path for HUD feel */
-        .clip-hud {
-            clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
-        }
-        
-        /* Speed Trail Animation */
-        @keyframes trail-flow {
-            0% { transform: scaleX(0.8); opacity: 0.4; }
-            50% { transform: scaleX(1.2); opacity: 0.8; }
-            100% { transform: scaleX(0.8); opacity: 0.4; }
-        }
-        @keyframes trail-particles {
-            0% { transform: translateX(0) scale(1); opacity: 0.8; }
-            100% { transform: translateX(-20px) scale(0); opacity: 0; }
-        }
-        .animate-trail {
-            animation: trail-flow 0.8s infinite ease-in-out;
-            transform-origin: right center;
-        }
-        .animate-particle {
-            animation: trail-particles 0.5s infinite linear;
-        }
-
-        /* Asphalt Texture */
         .bg-asphalt {
             background-color: #1e293b;
             background-image: url("data:image/svg+xml,%3Csvg width='6' height='6' viewBox='0 0 6 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23334155' fill-opacity='0.4' fill-rule='evenodd'%3E%3Cpath d='M5 0h1L0 6V5zM6 5v1H5z'/%3E%3C/g%3E%3C/svg%3E");
         }
-        
-        /* Grass/Crowd Texture */
-        .bg-crowd {
-            background-color: #10b981;
-            background-image: radial-gradient(#047857 15%, transparent 16%), radial-gradient(#047857 15%, transparent 16%);
-            background-size: 10px 10px;
-            background-position: 0 0, 5px 5px;
-            opacity: 0.8;
+
+        /* 2. Space Theme (Neon & Dark) */
+        .bg-space-pattern {
+            background-color: #0f172a;
+            background-image: 
+                radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 3px),
+                radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 2px);
+            background-size: 550px 550px, 350px 350px;
+        }
+        .bg-space-track {
+            background-color: #1e1b4b;
+            background-image: 
+                linear-gradient(rgba(99, 102, 241, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(99, 102, 241, 0.1) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+
+        /* 3. Farm Theme (Cute & Green) */
+        .bg-farm-pattern {
+            background-color: #f7fee7;
+            background-image: 
+                radial-gradient(#d9f99d 2px, transparent 2px),
+                radial-gradient(#d9f99d 2px, transparent 2px);
+            background-size: 40px 40px;
+            background-position: 0 0, 20px 20px;
+        }
+        .bg-dirt-track {
+            background-color: #a47148; /* Lighter dirt color */
+            background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%2378350f' fill-opacity='0.1' fill-rule='evenodd'%3E%3Cpath d='M0 38.59l2.83-2.83 1.41 1.41L1.41 40H0v-1.41zM0 1.4l2.83 2.83 1.41-1.41L1.41 0H0v1.41zM38.59 40l-2.83-2.83 1.41-1.41L40 38.59V40h-1.41zM40 1.41l-2.83 2.83-1.41-1.41L38.59 0H40v1.41zM20 18.6l2.83-2.83 1.41 1.41L21.41 20l2.83 2.83-1.41 1.41L20 21.41l-2.83 2.83-1.41-1.41L18.59 20l-2.83-2.83 1.41-1.41L20 18.59z'/%3E%3C/g%3E%3C/svg%3E");
         }
         
-        .bg-checkered {
-            background-image: 
-                linear-gradient(45deg, #000 25%, transparent 25%), 
-                linear-gradient(-45deg, #000 25%, transparent 25%), 
-                linear-gradient(45deg, transparent 75%, #000 75%), 
-                linear-gradient(-45deg, transparent 75%, #000 75%);
-            background-size: 20px 20px;
-            background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
-            opacity: 0.1;
+        .clip-hud {
+            /* No clip path for cute mode, we use rounded corners */
         }
     </style>
 </head>
-<body class="bg-f1-pattern text-slate-800 font-sans selection:bg-cyan-200 selection:text-cyan-900 overflow-x-hidden">
+<body class="font-cute selection:bg-yellow-200 selection:text-orange-900 overflow-x-hidden">
     <div id="root"></div>
 
     <script type="text/babel">
         const { useState, useEffect, useMemo } = React;
 
+        // --- THEME CONFIGURATIONS (Enhanced for Cuteness) ---
+        const THEMES = {
+            FARM: {
+                id: 'FARM',
+                name: '🐮 農場派對',
+                bgClass: 'bg-farm-pattern',
+                textMain: 'text-green-800',
+                textSub: 'text-green-600',
+                cardBg: 'bg-white border-4 border-green-200 shadow-[0_8px_0_rgba(22,163,74,0.2)]', // Sticker style
+                trackBg: 'bg-dirt-track',
+                trackBorder: 'border-8 border-orange-300', // Chunky border
+                trackHeader: 'bg-green-500 border-b-8 border-green-700 text-white',
+                laneBorder: 'border-orange-200/50',
+                turboColor: '#fdba74', // Dust
+                hudIconColor: 'text-orange-500',
+                milestoneBg: 'bg-yellow-400 border-orange-500' // Balloon/Sign color
+            },
+            F1: {
+                id: 'F1',
+                name: '🏎️ 極速賽車',
+                bgClass: 'bg-f1-pattern',
+                textMain: 'text-slate-800',
+                textSub: 'text-slate-500',
+                cardBg: 'bg-white border-2 border-blue-200 shadow-xl',
+                trackBg: 'bg-asphalt',
+                trackBorder: 'border-4 border-slate-700',
+                trackHeader: 'bg-slate-800 border-b-4 border-blue-500 text-white',
+                laneBorder: 'border-slate-500/30',
+                turboColor: 'white',
+                hudIconColor: 'text-blue-500',
+                milestoneBg: 'bg-blue-600 border-white'
+            },
+            SPACE: {
+                id: 'SPACE',
+                name: '🌌 星際漫遊',
+                bgClass: 'bg-space-pattern',
+                textMain: 'text-indigo-100',
+                textSub: 'text-indigo-300',
+                cardBg: 'bg-slate-900/90 border-2 border-indigo-500 shadow-[0_0_15px_rgba(99,102,241,0.5)]',
+                trackBg: 'bg-space-track',
+                trackBorder: 'border-4 border-indigo-500',
+                trackHeader: 'bg-indigo-900 border-b-4 border-purple-500 text-white',
+                laneBorder: 'border-indigo-500/30',
+                turboColor: '#818cf8', // Indigo neon
+                hudIconColor: 'text-purple-400',
+                milestoneBg: 'bg-indigo-600 border-cyan-400'
+            }
+        };
+
         // --- ICONS (SVG Components) ---
         const IconBase = ({ children, className, size = 24, ...props }) => (
-            <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className} {...props}>{children}</svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className={className} {...props}>{children}</svg>
         );
         const Trophy = (props) => <IconBase {...props}><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></IconBase>;
-        const Plus = (props) => <IconBase {...props}><path d="M5 12h14"/><path d="M12 5v14"/></IconBase>;
-        const Settings = (props) => <IconBase {...props}><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.47a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.35a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></IconBase>;
-        const Filter = (props) => <IconBase {...props}><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></IconBase>;
         const Info = (props) => <IconBase {...props}><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></IconBase>;
         const Store = (props) => <IconBase {...props}><path d="m2 7 4.41-4.41A2 2 0 0 1 7.83 2h8.34a2 2 0 0 1 1.42.59L22 7"/><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><path d="M15 22v-4a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4"/><path d="M2 7h20"/><path d="M22 7v3a2 2 0 0 1-2 2v0a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 16 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 12 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 8 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 4 12v0a2 2 0 0 1-2-2V7"/></IconBase>;
         const Award = (props) => <IconBase {...props}><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></IconBase>;
         const Zap = (props) => <IconBase {...props}><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></IconBase>;
         const Target = (props) => <IconBase {...props}><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></IconBase>;
-        const X = (props) => <IconBase {...props}><path d="M18 6 6 18"/><path d="m6 6 12 12"/></IconBase>;
         const RotateCcw = (props) => <IconBase {...props}><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></IconBase>;
-        const MapIcon = (props) => <IconBase {...props}><polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"/><line x1="9" x2="9" y1="3" y2="18"/><line x1="15" x2="15" y1="6" y2="21"/></IconBase>;
-        const Search = (props) => <IconBase {...props}><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></IconBase>;
-        const Flag = (props) => <IconBase {...props}><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" x2="4" y1="22" y2="15"/></IconBase>;
         const RefreshCw = (props) => <IconBase {...props}><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></IconBase>;
 
         // --- CONFIGURATION ---
         
-        // [UPDATED] Google Script Web App URL - Corrected to the specific URL provided by user
         const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxghoGKevzCyi7UvKx0bzdmSCiOqM_MrP_Z1TLiJhxORi4Oz-6gJHb5oX2e-0b584Ze/exec"; 
 
         const BRAND_GIFS = {
@@ -179,26 +221,16 @@
 
         // --- VISUAL COMPONENTS ---
 
-        const F1Card = ({ children, className = "" }) => (
-            <div className={`bg-white/80 backdrop-blur-md rounded-xl border border-sky-200 shadow-xl overflow-hidden relative group hover:border-cyan-400 transition-all duration-300 clip-hud ${className}`}>
-                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 via-cyan-400 to-blue-600 opacity-50 group-hover:opacity-100 transition-opacity"></div>
+        const F1Card = ({ children, className = "", theme }) => (
+            // Added transition-transform and hover:scale for fun interaction
+            <div className={`${theme.cardBg} rounded-3xl overflow-hidden relative group hover:scale-[1.02] transition-all duration-300 ${className}`}>
                 {children}
             </div>
         );
 
-        // Modern Speed Pattern background
-        const SpeedPattern = () => (
-            <div className="absolute inset-0 opacity-20 pointer-events-none" 
-                style={{ 
-                backgroundImage: `repeating-linear-gradient(45deg, transparent, transparent 10px, #e0f2fe 10px, #e0f2fe 12px)`,
-                }} 
-            />
-        );
-
         // --- COMPONENT: IMPACTFUL STRAIGHT TRACK (TOP 15 - 5 per Brand) ---
-        const ImpactfulStraightTrack = ({ data, title, height = "auto" }) => {
+        const ImpactfulStraightTrack = ({ data, title, theme, height = "auto" }) => {
             const maxSales = Math.max(...data.map(r => r.sales), 10); 
-            // Scale ensuring landmarks visible (at least 85 miles now, or leader * 1.35)
             const trackMax = Math.max(maxSales * 1.35, 85); 
             
             const formatMiles = (val) => `${val.toFixed(1)} 英里`;
@@ -214,42 +246,46 @@
             const computedHeight = Math.max((racerCount * LANE_HEIGHT) + (VERTICAL_PADDING * 2), 300);
             
             return (
-                /* REMOVED overflow-hidden from main container to let labels stick out */
-                <div className="bg-slate-900 rounded-3xl border-4 border-slate-700 shadow-2xl relative">
-                    {/* Header - Added rounded-t-2xl to match container radius manually */}
-                    <div className="bg-gradient-to-r from-slate-900 via-blue-900 to-slate-900 p-4 flex flex-col md:flex-row justify-between items-center relative z-20 shadow-md border-b-4 border-yellow-500 rounded-t-[1.3rem]">
-                        <h2 className="text-xl md:text-2xl font-racing flex items-center text-white italic tracking-wider mb-2 md:mb-0">
-                        <span className="mr-3 text-3xl">🏁</span> {title}
+                /* Main Track Container - rounded-3xl for cute look */
+                <div className={`rounded-[2.5rem] overflow-hidden ${theme.trackBorder} shadow-2xl relative transition-colors duration-500 bg-white/5`}>
+                    
+                    {/* Header */}
+                    <div className={`${theme.trackHeader} p-6 flex flex-col md:flex-row justify-between items-center relative z-30 shadow-lg transition-colors duration-500`}>
+                        <h2 className="text-2xl md:text-3xl font-cute font-bold flex items-center tracking-wide mb-2 md:mb-0">
+                        <span className="mr-3 text-4xl animate-bounce">🏁</span> {title}
                         </h2>
-                        <div className="text-sm font-numbers text-yellow-400 bg-black/40 px-4 py-1 rounded border border-yellow-500/50 shadow-sm uppercase tracking-widest">
+                        <div className="text-lg font-cute font-bold bg-white/20 px-6 py-2 rounded-full backdrop-blur-sm border-2 border-white/30 shadow-sm">
                             賽程範圍: 0 - {formatMiles(trackMax)}
                         </div>
                     </div>
                     
-                    {/* Track Area - Dynamic Height based on racer count */}
-                    {/* REMOVED overflow-hidden from here too, but apply it to the inner lanes layer */}
-                    <div className="relative w-full bg-asphalt rounded-b-[1.3rem]" style={{ height: `${computedHeight}px` }}>
+                    {/* Track Area */}
+                    <div className={`relative w-full ${theme.trackBg} transition-colors duration-500`} style={{ height: `${computedHeight}px` }}>
                         
-                        {/* 1. Track Surface & Racers (CLIPPED) - This layer clips trails/cows but is underneath labels */}
-                        <div className="absolute inset-0 overflow-hidden rounded-b-[1.3rem]">
-                             {/* Spectator Stands Top */}
-                             <div className="absolute top-0 left-0 right-0 h-10 bg-crowd z-10 border-b-4 border-slate-400 shadow-lg"></div>
+                        {/* 1. Track Surface & Racers (CLIPPED) */}
+                        <div className="absolute inset-0 overflow-hidden">
+                             {/* Spectator Stands/Turf Top */}
+                             <div className={`absolute top-0 left-0 right-0 h-16 ${theme.id === 'FARM' ? 'bg-green-600' : 'bg-black/20'} z-10 border-b-4 ${theme.trackBorder} shadow-inner`}></div>
                              
-                             {/* Spectator Stands Bottom */}
-                             <div className="absolute bottom-0 left-0 right-0 h-10 bg-crowd z-10 border-t-4 border-slate-400 shadow-lg"></div>
+                             {/* Spectator Stands/Turf Bottom */}
+                             <div className={`absolute bottom-0 left-0 right-0 h-16 ${theme.id === 'FARM' ? 'bg-green-600' : 'bg-black/20'} z-10 border-t-4 ${theme.trackBorder} shadow-inner`}></div>
                              
-                             {/* Stadium Lights Effect */}
-                             <div className="absolute top-0 left-0 w-64 h-64 bg-white/20 blur-3xl rounded-full pointer-events-none"></div>
-                             <div className="absolute top-0 right-0 w-64 h-64 bg-white/20 blur-3xl rounded-full pointer-events-none"></div>
+                             {/* Stadium Lights Effect (Only for F1/Space) */}
+                             {theme.id !== 'FARM' && (
+                                <>
+                                    <div className="absolute top-0 left-0 w-64 h-64 bg-white/20 blur-3xl rounded-full pointer-events-none"></div>
+                                    <div className="absolute top-0 right-0 w-64 h-64 bg-white/20 blur-3xl rounded-full pointer-events-none"></div>
+                                </>
+                             )}
 
                              {/* Lanes */}
                              {Array.from({length: racerCount}).map((_, i) => (
-                                <div key={i} className="absolute w-full border-b border-dashed border-slate-500/30" 
+                                <div key={i} className={`absolute w-full border-b-2 border-dashed ${theme.laneBorder}`} 
                                      style={{ top: `${VERTICAL_PADDING + (i * LANE_HEIGHT)}px`, height: `${LANE_HEIGHT}px` }}></div>
                              ))}
                              
-                             {/* Fixed Left Ranking Column (UPDATED ALIGNMENT) */}
-                             <div className="absolute left-2 top-0 bottom-0 w-8 z-30 pointer-events-none">
+                             {/* Fixed Left Ranking Column */}
+                             <div className="absolute left-4 top-0 bottom-0 w-12 z-30 pointer-events-none">
                                 {Array.from({length: racerCount}).map((_, i) => (
                                     <div 
                                         key={i} 
@@ -259,10 +295,10 @@
                                             height: `${LANE_HEIGHT}px` 
                                         }}
                                     >
-                                        <div className={`w-8 h-8 rounded bg-slate-800 flex items-center justify-center text-sm font-numbers font-bold text-white border border-slate-600 shadow-lg transform -skew-x-12
-                                            ${i === 0 ? 'bg-yellow-500 text-black border-yellow-300 scale-125' : 
-                                              i === 1 ? 'bg-slate-300 text-black' : 
-                                              i === 2 ? 'bg-amber-700' : ''}`}>
+                                        <div className={`w-10 h-10 rounded-full flex items-center justify-center text-xl font-cute font-bold text-white shadow-lg
+                                            ${i === 0 ? 'bg-yellow-400 border-4 border-yellow-200 scale-125 z-10' : 
+                                              i === 1 ? 'bg-slate-400 border-4 border-slate-300' : 
+                                              i === 2 ? 'bg-orange-700 border-4 border-orange-600' : 'bg-slate-700/80'}`}>
                                             {i + 1}
                                         </div>
                                     </div>
@@ -270,23 +306,22 @@
                              </div>
                              
                              {/* Start Line Grid */}
-                             <div className="absolute left-20 w-16 z-0 flex flex-col justify-center items-center opacity-50"
+                             <div className="absolute left-24 w-16 z-0 flex flex-col justify-center items-center opacity-70"
                                   style={{ top: `${VERTICAL_PADDING}px`, bottom: `${VERTICAL_PADDING}px` }}>
-                                <div className="w-full h-full" style={{ backgroundImage: 'linear-gradient(45deg, #000 25%, transparent 25%, transparent 75%, #000 75%), linear-gradient(45deg, #000 25%, transparent 25%, transparent 75%, #000 75%)', backgroundSize: '20px 20px', backgroundPosition: '0 0, 10px 10px' }}></div>
-                                <div className="absolute transform -rotate-90 text-white/50 font-racing text-4xl tracking-widest whitespace-nowrap">START</div>
+                                <div className="w-full h-full rounded-full" style={{ backgroundImage: 'linear-gradient(45deg, #000 25%, transparent 25%, transparent 75%, #000 75%), linear-gradient(45deg, #000 25%, transparent 25%, transparent 75%, #000 75%)', backgroundSize: '20px 20px', backgroundPosition: '0 0, 10px 10px' }}></div>
+                                <div className={`absolute transform -rotate-90 ${theme.id === 'SPACE' ? 'text-cyan-200' : 'text-white'} font-cute font-bold text-4xl tracking-widest whitespace-nowrap drop-shadow-md`}>START</div>
                              </div>
 
-                             {/* 3. The Racers (UPDATED ALIGNMENT) - Inside clipped area for trails */}
-                            <div className="absolute inset-0 pointer-events-none pl-16"> 
+                             {/* 3. The Racers */}
+                            <div className="absolute inset-0 pointer-events-none pl-20"> 
                                 {data.map((racer, index) => {
                                     const progress = Math.min((racer.sales / trackMax) * 100, 95); 
                                     const leftPos = 5 + (progress * 0.9);
                                     
-                                    // Logic to prevent label going off-screen (flip to left if > 55% - Earlier flip)
                                     const isNearEnd = progress > 55;
                                     const labelClass = isNearEnd 
-                                        ? "right-full mr-6 flex-row-reverse" // Increased from mr-4 to mr-6
-                                        : "left-full ml-6"; // Increased from ml-4 to ml-6
+                                        ? "right-full mr-6 flex-row-reverse" 
+                                        : "left-full ml-6";
 
                                     let trailColor = "from-transparent to-white";
                                     if (racer.brand === "Dermes") trailColor = "from-transparent via-orange-500 to-orange-200";
@@ -307,30 +342,33 @@
                                                     className="absolute transform -translate-y-1/2 transition-all duration-1000 ease-linear flex items-center group-hover:z-[100]"
                                                     style={{ left: `${leftPos}%`, top: '50%' }}
                                                 >
-                                                    {/* Turbo Trail */}
-                                                    <div className={`absolute right-8 top-1/2 -translate-y-1/2 h-3 md:h-4 w-48 md:w-64 bg-gradient-to-r ${trailColor} rounded-full blur-[4px] animate-trail origin-right -z-10 opacity-70`}></div>
-                                                    <div className={`absolute right-10 top-1/2 -translate-y-1/2 h-0.5 md:h-1 w-32 md:w-48 bg-white/90 rounded-full blur-[1px] animate-trail origin-right -z-10`} style={{ animationDelay: '0.05s' }}></div>
-                                                    
-                                                    {/* Particles */}
-                                                    <div className="absolute right-12 top-1/2 -translate-y-1/2 -z-20">
-                                                        <div className={`w-2 h-2 rounded-full bg-white animate-particle absolute -top-4 right-0`}></div>
-                                                        <div className={`w-1 h-1 rounded-full bg-white animate-particle absolute top-4 right-10`} style={{ animationDelay: '0.2s' }}></div>
-                                                        <div className={`w-1.5 h-1.5 rounded-full bg-white animate-particle absolute top-0 right-20`} style={{ animationDelay: '0.4s' }}></div>
+                                                    {/* Fun Turbo Trail / Dust */}
+                                                    <div className={`absolute right-10 top-1/2 -translate-y-1/2 -z-10`}>
+                                                        {theme.id === 'FARM' ? (
+                                                            // Dust Clouds for Farm
+                                                            <div className="flex space-x-[-10px] opacity-70">
+                                                                <div className="w-8 h-8 bg-orange-200/50 rounded-full animate-ping" style={{animationDuration: '1s'}}></div>
+                                                                <div className="w-6 h-6 bg-orange-100/50 rounded-full animate-ping" style={{animationDuration: '1.2s', animationDelay: '0.1s'}}></div>
+                                                            </div>
+                                                        ) : (
+                                                            // Speed lines for others
+                                                            <div className={`h-4 w-48 bg-gradient-to-r from-transparent to-${theme.turboColor} rounded-full blur-[2px] opacity-60`}></div>
+                                                        )}
                                                     </div>
 
-                                                    {/* Cow - Smaller size for compact lanes */}
-                                                    <div className="relative z-30 transform group-hover:scale-125 transition-transform cursor-pointer">
-                                                        {index < 3 && (
-                                                            <div className="absolute -inset-8 bg-white/20 rounded-full blur-xl animate-pulse -z-10"></div>
+                                                    {/* Cow with Bobbing Animation */}
+                                                    <div className="relative z-30 transform cursor-pointer animate-gallop hover:scale-110 transition-transform">
+                                                        {index < 3 && theme.id !== 'FARM' && (
+                                                            <div className={`absolute -inset-4 ${theme.id === 'SPACE' ? 'bg-cyan-400/30' : 'bg-white/40'} rounded-full blur-xl animate-pulse -z-10`}></div>
                                                         )}
                                                         
                                                         <img 
                                                             src={getBrandGif(racer.brand)} 
                                                             alt={racer.name} 
-                                                            className={`h-12 md:h-16 w-auto object-contain filter drop-shadow-2xl ${index===0 ? 'scale-110' : ''}`}
+                                                            className={`h-12 md:h-16 w-auto object-contain filter drop-shadow-xl ${index===0 ? 'scale-110' : ''}`}
                                                         />
                                                         
-                                                        {/* Name Tag - Adaptive Positioning & Z-Index */}
+                                                        {/* Cute Name Tag Bubble */}
                                                         <div className={`absolute ${labelClass} bg-slate-900/90 text-white px-2 py-0.5 md:px-3 md:py-1 rounded-lg text-[9px] md:text-[10px] font-bold shadow-xl border border-slate-500 z-[60] backdrop-blur-md transition-all whitespace-nowrap min-w-max group-hover:scale-100 group-hover:opacity-100 top-1/2 -translate-y-1/2 flex items-center`}>
                                                             <span className={isNearEnd ? "ml-1 order-2" : "mr-1"}>{racer.name.split(' ')[0]}</span>
                                                             <span className={`text-yellow-400 bg-black/30 px-1 rounded ${isNearEnd ? "order-1" : ""}`}>{formatMiles(racer.sales)}</span>
@@ -344,7 +382,7 @@
                             </div>
                         </div>
 
-                        {/* 2. Milestones (Holographic Arches) - NOW OUTSIDE CLIPPED AREA */}
+                        {/* 2. Milestones (Cuter Markers) */}
                         <div className="absolute inset-0 pointer-events-none">
                             {[20, 40, 60].map((mile, idx) => {
                                 const pct = (mile / trackMax) * 100;
@@ -355,28 +393,28 @@
                                 if(mile===40) { archColor = "border-blue-500"; badgeColor = "bg-blue-600"; }
                                 if(mile===60) { archColor = "border-purple-500"; badgeColor = "bg-purple-600"; }
 
-                                // Stagger logic: alternate TOP/BOTTOM placement with SIGNIFICANTLY INCREASED SPACE
                                 const isTop = idx % 2 === 0;
                                 const labelPositionClass = isTop 
-                                    ? "-top-16" // Increased from -top-12 to -top-16
-                                    : "top-full mt-16"; // Increased from mt-8 to mt-16
+                                    ? "-top-16"
+                                    : "top-full mt-16";
 
                                 return (
-                                    /* INCREASED Z-INDEX TO 40 to ensure it is ABOVE the header/crowd */
                                     <div key={mile} className="absolute w-1 z-40 pointer-events-none" 
                                          style={{ 
                                              left: `calc(5% + ${pct * 0.9}%)`,
                                              top: `${VERTICAL_PADDING}px`,
                                              bottom: `${VERTICAL_PADDING}px`
                                          }}>
-                                        {/* Holographic Wall Effect */}
-                                        <div className={`h-full w-full border-l-2 ${archColor} shadow-[0_0_15px_rgba(34,211,238,0.5)] opacity-40`}></div>
-                                        <div className={`absolute top-0 bottom-0 -left-4 w-8 bg-gradient-to-r from-transparent via-${archColor.split('-')[1]}-400/20 to-transparent`}></div>
                                         
-                                        {/* Floating Label - Alternating Top/Bottom */}
+                                        {/* Dotted Line */}
+                                        <div className={`h-full w-0 border-l-4 border-dotted ${theme.milestoneBg.split(' ')[0]} opacity-50`}></div>
+                                        
+                                        {/* Floating Label - Balloon Style */}
                                         <div className={`absolute ${labelPositionClass} -left-20 w-40 flex flex-col items-center z-50`}>
-                                            <div className={`w-full ${badgeColor} text-white text-[10px] md:text-[12px] font-bold py-1 px-2 md:px-3 rounded shadow-[0_0_10px_rgba(255,255,255,0.5)] text-center tracking-widest border border-white/50 transform whitespace-nowrap`}>
-                                                完成{mile}英里
+                                            <div className={`relative ${theme.milestoneBg} text-white font-cute font-bold py-2 px-4 rounded-full shadow-lg text-center transform hover:scale-110 transition-transform`}>
+                                                <span className="text-lg">🚩 {mile}</span> <span className="text-xs opacity-90">MILES</span>
+                                                {/* Little triangle pointer */}
+                                                <div className={`absolute left-1/2 -translate-x-1/2 w-0 h-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent ${isTop ? 'border-t-[8px] border-t-current top-full' : 'border-b-[8px] border-b-current bottom-full'} ${theme.milestoneBg.split(' ')[0].replace('bg-', 'text-')}`}></div>
                                             </div>
                                         </div>
                                     </div>
@@ -391,30 +429,29 @@
         // --- MAIN COMPONENT ---
 
         function SalesDerbyBlue() {
-            // Initial State: Use Sample Data first, will be overwritten by Google Sheet if URL provided
             const [racers, setRacers] = useState(SAMPLE_RACERS);
             const [isLoading, setIsLoading] = useState(false);
             const [lastUpdated, setLastUpdated] = useState(null);
-            const [fetchError, setFetchError] = useState(false); // New state to track error
+            const [fetchError, setFetchError] = useState(false);
+            const [currentTheme, setCurrentTheme] = useState('FARM'); // Default to Farm
             
-            const [isAdminOpen, setIsAdminOpen] = useState(false);
-            
-            // Scorecard State - Separate Filters
+            // Scorecard State
             const [scBrand, setScBrand] = useState("ALL");
             const [scShop, setScShop] = useState("ALL");
             const [scRacerId, setScRacerId] = useState("");
 
+            const theme = THEMES[currentTheme];
+
             // --- DATA FETCHING ---
             const fetchData = () => {
-                if (!GOOGLE_SCRIPT_URL) return; // Skip if no URL set
+                if (!GOOGLE_SCRIPT_URL) return;
                 
                 setIsLoading(true);
                 setFetchError(false);
                 
-                // Add redirect: 'follow' and try/catch block
                 fetch(GOOGLE_SCRIPT_URL, {
                     method: 'GET',
-                    redirect: 'follow', // Important for Google Scripts
+                    redirect: 'follow',
                 })
                 .then(response => {
                     if (!response.ok) {
@@ -425,7 +462,6 @@
                 .then(data => {
                     console.log("Fetched Data:", data);
                     if (data && data.length > 0) {
-                        // Helper to normalize keys (remove spaces, underscores, lowercase)
                         const normalizeKeys = (obj) => {
                             const newObj = {};
                             Object.keys(obj).forEach(key => {
@@ -435,7 +471,6 @@
                             return newObj;
                         };
 
-                        // Helper to safely parse numbers/currency
                         const parseNum = (val) => {
                             if (typeof val === 'number') return val;
                             if (typeof val === 'string') return parseFloat(val.replace(/[$,]/g, '')) || 0;
@@ -443,10 +478,9 @@
                         };
 
                         const newRacers = data
-                            .map((row) => normalizeKeys(row)) // Normalize keys first
-                            .filter(row => row.name) // Filter out empty rows
+                            .map((row) => normalizeKeys(row))
+                            .filter(row => row.name)
                             .map((row, index) => {
-                                // Access using normalized keys: trialqty, packagesales, etc.
                                 const trialQty = parseNum(row.trialqty);
                                 const packageSales = parseNum(row.packagesales);
                                 const comboQty = parseNum(row.comboqty);
@@ -454,23 +488,11 @@
                                 const polycaQty = parseNum(row.polycaqty);
                                 const deviceQty = parseNum(row.deviceqty);
 
-                                // CALCULATE MILES BASED ON RULES
-                                // Rule 1: 2 Trial = 1 Mile
                                 const milesTrial = Math.floor(trialQty / 2) * 1;
-                                
-                                // Rule 2: $10000 Sales = 1 Mile
                                 const milesPackage = Math.floor(packageSales / 10000) * 1;
-                                
-                                // Rule 3: 1 Combo = 2 Miles
                                 const milesCombo = comboQty * 2;
-                                
-                                // Rule 4: 3 Plla = 2 Miles
                                 const milesPlla = Math.floor(pllaQty / 3) * 2;
-                                
-                                // Rule 5: 3 Polyca = 2 Miles
                                 const milesPolyca = Math.floor(polycaQty / 3) * 2;
-                                
-                                // Rule 6: 1 Device = 2 Miles
                                 const milesDevice = deviceQty * 2;
 
                                 const totalMiles = milesTrial + milesPackage + milesCombo + milesPlla + milesPolyca + milesDevice;
@@ -480,16 +502,13 @@
                                     name: row.name,
                                     brand: row.brand || "Unknown",
                                     shop: row.shop || "HQ", 
-                                    
-                                    // Store raw values for breakdown
                                     trial_qty: trialQty,
                                     package_sales: packageSales,
                                     combo_qty: comboQty,
                                     plla_qty: pllaQty,
                                     polyca_qty: polycaQty,
                                     device_qty: deviceQty,
-
-                                    sales: totalMiles, // TOTAL MILES
+                                    sales: totalMiles,
                                     color: BRAND_COLORS[row.brand] || "#94a3b8"
                                 };
                             });
@@ -504,23 +523,18 @@
                     console.warn("Error fetching data (using sample data):", err);
                     setFetchError(true);
                     setIsLoading(false);
-                    // Do NOT clear racers here, keep using sample/previous data
                 });
             };
 
-            // Fetch on mount and interval
             useEffect(() => {
-                fetchData(); // Initial fetch
-                const interval = setInterval(fetchData, 30000); // 30s polling
+                fetchData();
+                const interval = setInterval(fetchData, 30000);
                 return () => clearInterval(interval);
             }, []);
 
-
-            // Data Logic
             const sortedGlobal = [...racers].sort((a, b) => b.sales - a.sales);
             const top3 = sortedGlobal.slice(0, 3);
             
-            // --- NEW LOGIC: TOP 5 FROM EACH BRAND (15 Total) ---
             const getTop5ByBrand = (brandName) => {
                 return racers
                     .filter(r => r.brand === brandName)
@@ -531,8 +545,6 @@
             const top5Dermes = getTop5ByBrand("Dermes");
             const top5Reenex = getTop5ByBrand("Reenex");
             const top5Elyze = getTop5ByBrand("Elyze");
-
-            // Combine all top 5s and sort them by speed for the race track display
             const top15Combined = [...top5Dermes, ...top5Reenex, ...top5Elyze]
                 .sort((a, b) => b.sales - a.sales);
             
@@ -558,10 +570,6 @@
                 }
             }, [scAvailableRacers, scRacerId]);
 
-            const updateSales = (id, amount) => {
-                setRacers(racers.map(r => r.id === id ? { ...r, sales: Math.max(0, r.sales + amount) } : r));
-            };
-
             const formatMiles = (val) => `${val.toFixed(1)} 英里`;
             const formatCurrency = (val) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'HKD', maximumFractionDigits: 0 }).format(val);
 
@@ -569,29 +577,23 @@
                 return BRAND_GIFS[brand] || "https://placehold.co/600x338/e2e8f0/64748b?text=Running+Cow";
             };
 
-            // Helper to generate breakdown data FROM REAL VALUES
             const getRacerBreakdown = (racer) => {
                 if (!racer) return null;
-                // If using sample data (initial load), we might not have the raw keys, so fallback
-                // But generally we expect the keys to be there from fetchData or SAMPLE_RACERS
                 return {
                     pnPaidTrial: racer.trial_qty || 0,
-                    pnPackage: racer.package_sales || 0, // This is value amount
+                    pnPackage: racer.package_sales || 0, 
                     combo: racer.combo_qty || 0,
                     plla: racer.plla_qty || 0,
                     polyca: racer.polyca_qty || 0,
                     home: racer.device_qty || 0,
-                    
-                    // Count for package implies 'units' of 10k? No, scorecard displays revenue directly.
-                    // Scorecard logic below uses these raw values.
                 };
             };
 
             return (
-                <div className="min-h-screen bg-f1-pattern text-slate-800 font-sans selection:bg-cyan-200 selection:text-cyan-900 relative">
+                <div className={`min-h-screen ${theme.bgClass} font-cute selection:bg-yellow-200 selection:text-orange-900 relative transition-colors duration-1000`}>
                 
                 {/* --- SECTION 1: GAME POSTER --- */}
-                <section className="relative w-full bg-white shadow-xl z-20 border-b-4 border-cyan-500">
+                <section className="relative w-full bg-white shadow-xl z-20 border-b-8 border-green-500">
                     <div className="w-full">
                         <img 
                         src="https://i.postimg.cc/90qwfFYV/jimeng-2026-01-17-3723-ji-zhi-pang-pang-de-niu-zai-zhuan-ye-sai-dao-shang-gun-dong-zhe-fa-guang-de-qiu-ti-jin-xing-bi-sai-qiu-ti-dai-biao-jiao-yuan-dan-bai-zeng-qiang-qiu-yi-ban-xian.png" 
@@ -599,148 +601,182 @@
                         className="w-full h-auto object-cover block"
                         />
                     </div>
+                    {/* Theme Switcher */}
+                    <div className="absolute top-4 right-4 z-50 flex gap-2">
+                        {Object.values(THEMES).map(t => (
+                            <button
+                                key={t.id}
+                                onClick={() => setCurrentTheme(t.id)}
+                                className={`px-4 py-2 rounded-full text-sm font-bold shadow-lg border-2 transition-all transform hover:scale-105 ${
+                                    currentTheme === t.id 
+                                    ? 'bg-white text-black border-green-500 scale-110' 
+                                    : 'bg-black/50 text-white border-white/30 hover:bg-black/70'
+                                }`}
+                            >
+                                {t.name}
+                            </button>
+                        ))}
+                    </div>
                 </section>
 
                 <main className="max-w-7xl mx-auto p-4 md:p-8 space-y-16 pb-24">
 
-                    {/* --- SECTION 2: STATS HUD --- */}
+                    {/* --- SECTION 2: STATS HUD (FUN & CUTE) --- */}
                     <section className="w-full">
                         <div className="text-center mb-8">
-                            <h1 className="text-3xl md:text-6xl font-racing text-transparent bg-clip-text bg-gradient-to-br from-blue-700 to-cyan-500 uppercase tracking-widest drop-shadow-sm mb-2">
-                            飛輪帶飛輪無限可能
+                            <h1 className={`text-4xl md:text-7xl font-cute font-bold text-transparent bg-clip-text bg-gradient-to-br from-green-600 to-yellow-500 drop-shadow-sm mb-4 animate-wiggle`}>
+                            膠原飛輪跑 🐮
                             </h1>
-                            <div className="inline-block bg-slate-900 text-cyan-300 px-6 py-1 rounded transform -skew-x-12 border border-cyan-500/50">
-                                <span className="block transform skew-x-12 font-numbers text-xl tracking-widest">全民競跑 • 人人二十英里</span>
+                            <div className="inline-block bg-white text-green-600 px-8 py-2 rounded-full border-4 border-green-400 shadow-lg transform rotate-[-2deg] hover:rotate-[2deg] transition-transform">
+                                <span className="block text-xl md:text-2xl font-bold tracking-widest">全民競跑 • 人人二十英里</span>
                             </div>
                         </div>
 
                         {/* TELEMETRY CARDS */}
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
-                             {/* Revenue HUD - Total Miles x something or just Total Miles? Let's show Total Miles instead of fake revenue now, or keep mock revenue based on miles */}
-                             <F1Card className="p-4 md:p-6 flex flex-col justify-between h-auto md:h-40">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                             {/* Revenue HUD */}
+                             <F1Card theme={theme} className="p-6 flex flex-col justify-between h-auto md:h-48 bg-white">
                                 <div className="flex justify-between items-start">
-                                    <h3 className="text-slate-500 text-base md:text-lg font-bold tracking-wider">團隊總里程</h3>
-                                    <Award className="text-cyan-500 animate-pulse" size={24} />
+                                    <h3 className={`${theme.textSub} text-xl font-bold tracking-wider`}>團隊總里程</h3>
+                                    <div className="bg-yellow-100 p-3 rounded-full text-yellow-500">
+                                        <Award className="animate-bounce-slow" size={32} />
+                                    </div>
                                 </div>
                                 <div className="text-right">
-                                    <div className="text-3xl md:text-4xl font-numbers font-bold text-slate-800">{racers.reduce((a,b)=>a+b.sales,0).toFixed(1)} MILES</div>
-                                    <div className="w-full bg-slate-200 h-1 mt-2 rounded-full overflow-hidden">
-                                        <div className="bg-cyan-500 h-full w-2/3"></div>
+                                    <div className={`text-5xl font-cute font-bold ${theme.textMain} mb-2`}>{racers.reduce((a,b)=>a+b.sales,0).toFixed(1)} <span className="text-2xl">MILES</span></div>
+                                    <div className="w-full bg-slate-100 h-4 rounded-full overflow-hidden border-2 border-slate-200">
+                                        <div className="bg-green-400 h-full w-2/3 rounded-full animate-pulse"></div>
                                     </div>
                                 </div>
                              </F1Card>
 
                              {/* Racers HUD */}
-                             <F1Card className="p-4 md:p-6 flex flex-col justify-between h-auto md:h-40">
+                             <F1Card theme={theme} className="p-6 flex flex-col justify-between h-auto md:h-48 bg-white">
                                 <div className="flex justify-between items-start">
-                                    <h3 className="text-slate-500 text-base md:text-lg font-bold tracking-wider">選手數量</h3>
-                                    <Store className="text-blue-500" size={24} />
+                                    <h3 className={`${theme.textSub} text-xl font-bold tracking-wider`}>選手數量</h3>
+                                    <div className="bg-blue-100 p-3 rounded-full text-blue-500">
+                                        <Store className="animate-pulse" size={32} />
+                                    </div>
                                 </div>
                                 <div className="flex items-end justify-between">
-                                     <div className="text-4xl md:text-5xl font-numbers font-bold text-slate-800">{racers.length}</div>
-                                     <div className="text-xs text-slate-400 mb-2 font-racing">PILOTS ON TRACK</div>
+                                     <div className={`text-6xl font-cute font-bold ${theme.textMain}`}>{racers.length}</div>
+                                     <div className={`text-sm ${theme.textSub} mb-3 font-bold bg-slate-100 px-3 py-1 rounded-full`}>ON TRACK</div>
                                 </div>
                              </F1Card>
 
                              {/* Top Leader HUD */}
-                             <F1Card className="p-4 md:p-6 flex flex-col justify-between h-auto md:h-40 bg-gradient-to-br from-slate-900 to-blue-900 border-none">
+                             <F1Card theme={theme} className={`p-6 flex flex-col justify-between h-auto md:h-48 ${currentTheme === 'FARM' ? 'bg-gradient-to-br from-yellow-50 to-orange-50' : 'bg-gradient-to-br from-slate-800 to-slate-900'} border-none`}>
                                 <div className="flex justify-between items-start">
-                                    <h3 className="text-cyan-300 text-base md:text-lg font-bold tracking-wider">排頭位選手</h3>
-                                    <Trophy className="text-yellow-400" size={24} />
+                                    <h3 className={`${currentTheme === 'FARM' ? 'text-orange-800' : 'text-cyan-300'} text-xl font-bold tracking-wider`}>目前第一名</h3>
+                                    <div className="bg-yellow-300 p-3 rounded-full text-yellow-800 shadow-md">
+                                        <Trophy className="animate-bounce" size={32} />
+                                    </div>
                                 </div>
                                 <div>
-                                    <div className="text-2xl md:text-3xl font-bold text-white truncate">{top3[0]?.name}</div>
-                                    <div className="text-cyan-400 font-numbers text-xl">{top3[0]?.sales.toFixed(1)} MILES</div>
+                                    <div className={`text-3xl font-bold ${currentTheme === 'FARM' ? 'text-orange-900' : 'text-white'} truncate mb-1`}>{top3[0]?.name}</div>
+                                    <div className={`${currentTheme === 'FARM' ? 'text-orange-600' : 'text-cyan-400'} font-cute text-2xl font-bold`}>{top3[0]?.sales.toFixed(1)} MILES</div>
                                 </div>
                              </F1Card>
                         </div>
                     </section>
 
-                    {/* --- SECTION 3: THE RACING COURSE (TOP 5 FROM EACH BRAND) --- */}
+                    {/* --- SECTION 3: THE RACING COURSE --- */}
                     <section>
-                        <ImpactfulStraightTrack data={top15Combined} title="各品牌 Top 5 激戰" height="1500px" />
+                        <ImpactfulStraightTrack data={top15Combined} title="各品牌 Top 5 激戰" theme={theme} height="1500px" />
                     </section>
 
-                    {/* --- SECTION 4: GAME RULES (STRATEGY CARDS) --- */}
+                    {/* --- SECTION 4: GAME RULES (FUN CARDS) --- */}
                     <section className="grid grid-cols-1 gap-8">
                         <div className="relative">
                              <div className="text-center mb-10">
-                                <h3 className="text-2xl md:text-3xl font-racing text-slate-800 uppercase tracking-widest flex items-center justify-center gap-3">
-                                    <Info className="text-cyan-600" /> 膠原飛輪跑加速條件
+                                <h3 className={`text-3xl md:text-4xl font-cute ${theme.textMain} font-bold flex items-center justify-center gap-3`}>
+                                    <span className="bg-green-100 p-2 rounded-full"><Info className="text-green-600" /></span> 加速攻略
                                 </h3>
-                                <p className="text-slate-500 font-numbers text-lg md:text-xl">掌握以下六大法則，助力肥牛飛速衝刺！</p>
+                                <p className={`${theme.textSub} font-cute text-xl mt-2`}>掌握以下六大法則，助力肥牛飛速衝刺！🚀</p>
                              </div>
 
                              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                                 {/* Rule 1 */}
-                                <F1Card className="p-6 group hover:bg-slate-50">
+                                <F1Card theme={theme} className="p-6 bg-white hover:rotate-1 hover:shadow-xl transition-transform">
                                     <div className="flex items-center gap-4 mb-4">
-                                        <div className="w-10 h-10 bg-teal-100 text-teal-700 rounded flex items-center justify-center font-numbers font-bold text-2xl">1</div>
-                                        <h4 className="font-bold text-slate-700">PN+ Paid Trial</h4>
+                                        <div className="w-12 h-12 bg-teal-100 text-teal-600 rounded-full flex items-center justify-center font-bold text-2xl shadow-sm">1</div>
+                                        <h4 className={`text-xl font-bold ${theme.textMain}`}>PN+ Paid Trial</h4>
                                     </div>
-                                    <p className="text-sm text-slate-500 mb-4">每賣出 <strong className="text-slate-800">2 個</strong> PN+ Paid Trial</p>
-                                    <div className="bg-teal-500 text-white text-center py-2 rounded font-racing text-sm uppercase tracking-wider shadow-lg shadow-teal-200">
-                                        向前移動 1 英里 🆕
+                                    <div className="bg-slate-50 p-4 rounded-xl mb-4 text-center border border-slate-100">
+                                        <p className={`text-sm ${theme.textSub}`}>每賣出 <strong className="text-teal-600 text-lg">2 個</strong></p>
+                                    </div>
+                                    <div className="bg-teal-500 text-white text-center py-2 rounded-full font-bold shadow-lg shadow-teal-200 transform translate-y-2">
+                                        + 1 英里 🆕
                                     </div>
                                 </F1Card>
 
                                 {/* Rule 2 */}
-                                <F1Card className="p-6 group hover:bg-slate-50">
+                                <F1Card theme={theme} className="p-6 bg-white hover:-rotate-1 hover:shadow-xl transition-transform">
                                     <div className="flex items-center gap-4 mb-4">
-                                        <div className="w-10 h-10 bg-cyan-100 text-cyan-700 rounded flex items-center justify-center font-numbers font-bold text-2xl">2</div>
-                                        <h4 className="font-bold text-slate-700">含 PN+ Package</h4>
+                                        <div className="w-12 h-12 bg-cyan-100 text-cyan-600 rounded-full flex items-center justify-center font-bold text-2xl shadow-sm">2</div>
+                                        <h4 className={`text-xl font-bold ${theme.textMain}`}>含 PN+ Package</h4>
                                     </div>
-                                    <p className="text-sm text-slate-500 mb-4">每賣出滿 <strong className="text-slate-800">$10,000</strong></p>
-                                    <div className="bg-cyan-500 text-white text-center py-2 rounded font-racing text-sm uppercase tracking-wider shadow-lg shadow-cyan-200">
-                                        向前移動 1 英里 ⚡
+                                    <div className="bg-slate-50 p-4 rounded-xl mb-4 text-center border border-slate-100">
+                                        <p className={`text-sm ${theme.textSub}`}>每賣出 <strong className="text-cyan-600 text-lg">$10,000</strong></p>
+                                    </div>
+                                    <div className="bg-cyan-500 text-white text-center py-2 rounded-full font-bold shadow-lg shadow-cyan-200 transform translate-y-2">
+                                        + 1 英里 ⚡
                                     </div>
                                 </F1Card>
 
                                 {/* Rule 3 */}
-                                <F1Card className="p-6 group hover:bg-slate-50">
+                                <F1Card theme={theme} className="p-6 bg-white hover:rotate-1 hover:shadow-xl transition-transform">
                                     <div className="flex items-center gap-4 mb-4">
-                                        <div className="w-10 h-10 bg-blue-100 text-blue-700 rounded flex items-center justify-center font-numbers font-bold text-2xl">3</div>
-                                        <h4 className="font-bold text-slate-700">PN+ Combo System</h4>
+                                        <div className="w-12 h-12 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center font-bold text-2xl shadow-sm">3</div>
+                                        <h4 className={`text-xl font-bold ${theme.textMain}`}>PN+ Combo</h4>
                                     </div>
-                                    <p className="text-sm text-slate-500 mb-4">每賣出 <strong className="text-slate-800">1 個</strong></p>
-                                    <div className="bg-blue-600 text-white text-center py-2 rounded font-racing text-sm uppercase tracking-wider shadow-lg shadow-blue-200">
-                                        向前移動 2 英里 🚀
+                                    <div className="bg-slate-50 p-4 rounded-xl mb-4 text-center border border-slate-100">
+                                        <p className={`text-sm ${theme.textSub}`}>每賣出 <strong className="text-blue-600 text-lg">1 個</strong></p>
+                                    </div>
+                                    <div className="bg-blue-500 text-white text-center py-2 rounded-full font-bold shadow-lg shadow-blue-200 transform translate-y-2">
+                                        + 2 英里 🚀
                                     </div>
                                 </F1Card>
 
                                 {/* Rule 4 */}
-                                <F1Card className="p-6 group hover:bg-slate-50">
+                                <F1Card theme={theme} className="p-6 bg-white hover:-rotate-1 hover:shadow-xl transition-transform">
                                     <div className="flex items-center gap-4 mb-4">
-                                        <div className="w-10 h-10 bg-purple-100 text-purple-700 rounded flex items-center justify-center font-numbers font-bold text-2xl">4</div>
-                                        <h4 className="font-bold text-slate-700">Plla 5 Product</h4>
+                                        <div className="w-12 h-12 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center font-bold text-2xl shadow-sm">4</div>
+                                        <h4 className={`text-xl font-bold ${theme.textMain}`}>Plla 5 Product</h4>
                                     </div>
-                                    <p className="text-sm text-slate-500 mb-4">每賣出 <strong className="text-slate-800">3 個</strong> Plla 5 product</p>
-                                    <div className="bg-purple-600 text-white text-center py-2 rounded font-racing text-sm uppercase tracking-wider shadow-lg shadow-purple-200">
-                                        向前移動 2 英里 ✨
+                                    <div className="bg-slate-50 p-4 rounded-xl mb-4 text-center border border-slate-100">
+                                        <p className={`text-sm ${theme.textSub}`}>每賣出 <strong className="text-purple-600 text-lg">3 個</strong></p>
+                                    </div>
+                                    <div className="bg-purple-500 text-white text-center py-2 rounded-full font-bold shadow-lg shadow-purple-200 transform translate-y-2">
+                                        + 2 英里 ✨
                                     </div>
                                 </F1Card>
                                 
                                 {/* Rule 5 */}
-                                <F1Card className="p-6 group hover:bg-slate-50">
+                                <F1Card theme={theme} className="p-6 bg-white hover:rotate-1 hover:shadow-xl transition-transform">
                                     <div className="flex items-center gap-4 mb-4">
-                                        <div className="w-10 h-10 bg-orange-100 text-orange-700 rounded flex items-center justify-center font-numbers font-bold text-2xl">5</div>
-                                        <h4 className="font-bold text-slate-700">Polyca</h4>
+                                        <div className="w-12 h-12 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center font-bold text-2xl shadow-sm">5</div>
+                                        <h4 className={`text-xl font-bold ${theme.textMain}`}>Polyca</h4>
                                     </div>
-                                    <p className="text-sm text-slate-500 mb-4">每賣出 <strong className="text-slate-800">3 個</strong> Polyca</p>
-                                    <div className="bg-orange-500 text-white text-center py-2 rounded font-racing text-sm uppercase tracking-wider shadow-lg shadow-orange-200">
-                                        向前移動 2 英里 🔥
+                                    <div className="bg-slate-50 p-4 rounded-xl mb-4 text-center border border-slate-100">
+                                        <p className={`text-sm ${theme.textSub}`}>每賣出 <strong className="text-orange-600 text-lg">3 個</strong></p>
+                                    </div>
+                                    <div className="bg-orange-500 text-white text-center py-2 rounded-full font-bold shadow-lg shadow-orange-200 transform translate-y-2">
+                                        + 2 英里 🔥
                                     </div>
                                 </F1Card>
 
                                 {/* Rule 6 */}
-                                <F1Card className="p-6 group hover:bg-slate-50">
+                                <F1Card theme={theme} className="p-6 bg-white hover:-rotate-1 hover:shadow-xl transition-transform">
                                     <div className="flex items-center gap-4 mb-4">
-                                        <div className="w-10 h-10 bg-pink-100 text-pink-700 rounded flex items-center justify-center font-numbers font-bold text-2xl">6</div>
-                                        <h4 className="font-bold text-slate-700">Home Device</h4>
+                                        <div className="w-12 h-12 bg-pink-100 text-pink-600 rounded-full flex items-center justify-center font-bold text-2xl shadow-sm">6</div>
+                                        <h4 className={`text-xl font-bold ${theme.textMain}`}>Home Device</h4>
                                     </div>
-                                    <p className="text-sm text-slate-500 mb-4">每賣出 <strong className="text-slate-800">1 套</strong> home device</p>
-                                    <div className="bg-pink-500 text-white text-center py-2 rounded font-racing text-sm uppercase tracking-wider shadow-lg shadow-pink-200">
-                                        向前移動 2 英里 🏠
+                                    <div className="bg-slate-50 p-4 rounded-xl mb-4 text-center border border-slate-100">
+                                        <p className={`text-sm ${theme.textSub}`}>每賣出 <strong className="text-pink-600 text-lg">1 套</strong></p>
+                                    </div>
+                                    <div className="bg-pink-500 text-white text-center py-2 rounded-full font-bold shadow-lg shadow-pink-200 transform translate-y-2">
+                                        + 2 英里 🏠
                                     </div>
                                 </F1Card>
                              </div>
@@ -748,33 +784,36 @@
                     </section>
 
                     {/* --- SECTION 5: DRIVER LICENSE (SCORECARD) --- */}
-                    <section className="pt-8 border-t border-slate-300">
+                    <section className="pt-12 border-t-4 border-dashed border-slate-300">
                          {/* Header & Filters */}
                         <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
                             <div>
-                                <h2 className="text-2xl md:text-3xl font-racing text-slate-800 flex items-center uppercase">
-                                    <Target className="mr-3 text-cyan-600" /> 個人成績單 (Score Card)
+                                <h2 className={`text-3xl md:text-4xl font-cute ${theme.textMain} flex items-center font-bold`}>
+                                    <span className="bg-blue-100 p-2 rounded-full mr-3"><Target className="text-blue-500" /></span> 個人成績單
                                 </h2>
-                                <p className="text-slate-500 mt-1 font-numbers text-lg">查看個別參賽者的詳細得分與任務達成狀況</p>
+                                <p className={`${theme.textSub} mt-2 font-cute text-lg ml-2`}>查看個別參賽者的詳細得分與任務達成狀況</p>
                             </div>
                             
-                            <div className="flex flex-col sm:flex-row gap-2 items-stretch sm:items-center bg-white p-2 rounded-lg shadow-sm border border-slate-200 w-full md:w-auto">
+                            <div className={`flex flex-col sm:flex-row gap-3 items-stretch sm:items-center ${theme.cardBg} p-3 rounded-2xl shadow-lg w-full md:w-auto bg-white`}>
                                 <div className="relative flex-1">
-                                    <select value={scBrand} onChange={(e) => setScBrand(e.target.value)} className="w-full bg-slate-50 text-slate-700 text-sm rounded pl-3 pr-8 py-2 focus:ring-2 focus:ring-cyan-500 outline-none border-none font-bold uppercase">
+                                    <select value={scBrand} onChange={(e) => setScBrand(e.target.value)} className="w-full bg-slate-50 text-slate-700 text-sm rounded-xl pl-4 pr-10 py-3 focus:ring-4 focus:ring-green-200 outline-none border-2 border-slate-100 font-bold uppercase cursor-pointer hover:bg-slate-100 transition-colors appearance-none">
                                         <option value="ALL">所有品牌</option>
                                         {brands.map(b => <option key={b} value={b}>{b}</option>)}
                                     </select>
+                                    <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">▼</div>
                                 </div>
                                 <div className="relative flex-1">
-                                    <select value={scShop} onChange={(e) => setScShop(e.target.value)} className="w-full bg-slate-50 text-slate-700 text-sm rounded pl-3 pr-8 py-2 focus:ring-2 focus:ring-cyan-500 outline-none border-none font-bold uppercase">
+                                    <select value={scShop} onChange={(e) => setScShop(e.target.value)} className="w-full bg-slate-50 text-slate-700 text-sm rounded-xl pl-4 pr-10 py-3 focus:ring-4 focus:ring-green-200 outline-none border-2 border-slate-100 font-bold uppercase cursor-pointer hover:bg-slate-100 transition-colors appearance-none">
                                         <option value="ALL">所有樓層</option>
                                         {shops.map(s => <option key={s} value={s}>{s}</option>)}
                                     </select>
+                                    <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">▼</div>
                                 </div>
                                 <div className="relative flex-1">
-                                    <select value={scRacerId} onChange={(e) => setScRacerId(e.target.value)} className="w-full bg-slate-800 text-cyan-400 text-sm rounded pl-3 pr-8 py-2 focus:ring-2 focus:ring-cyan-500 outline-none border-none font-bold uppercase min-w-[150px]">
+                                    <select value={scRacerId} onChange={(e) => setScRacerId(e.target.value)} className="w-full bg-green-500 text-white text-sm rounded-xl pl-4 pr-10 py-3 focus:ring-4 focus:ring-green-300 outline-none border-none font-bold uppercase min-w-[150px] cursor-pointer hover:bg-green-600 transition-colors appearance-none shadow-md">
                                         {scAvailableRacers.map(r => <option key={r.id} value={r.id}>{r.name}</option>)}
                                     </select>
+                                    <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-white/80">▼</div>
                                 </div>
                             </div>
                         </div>
@@ -789,68 +828,71 @@
                             if (!racer) return null; // Guard
 
                             return (
-                                <div className="bg-slate-900 rounded-2xl shadow-2xl overflow-hidden relative border-t-8 border-cyan-500 text-white">
-                                    <div className="absolute top-0 right-0 p-32 bg-cyan-500/10 rounded-full blur-3xl -mr-10 -mt-10"></div>
+                                <div className="bg-white rounded-[2rem] shadow-2xl overflow-hidden relative border-8 border-slate-100 text-slate-800 transform hover:scale-[1.01] transition-transform duration-500">
+                                    <div className="absolute top-0 right-0 p-40 bg-green-100 rounded-full blur-3xl -mr-10 -mt-10 opacity-50"></div>
                                     
-                                    <div className="grid grid-cols-1 lg:grid-cols-3">
+                                    <div className="grid grid-cols-1 lg:grid-cols-3 relative z-10">
                                         {/* Left: Profile */}
-                                        <div className="p-8 bg-slate-800/50 flex flex-col items-center justify-center border-b lg:border-b-0 lg:border-r border-slate-700 relative">
-                                            <div className="w-32 h-32 rounded-full bg-white p-1 mb-4 relative">
-                                                <img src={getBrandGif(racer.brand)} className="w-full h-full object-contain rounded-full bg-slate-100" />
-                                                <div className="absolute -bottom-2 -right-2 bg-yellow-400 text-black w-10 h-10 flex items-center justify-center font-black rounded-full border-2 border-slate-900 text-xl font-numbers">#{actualRank}</div>
+                                        <div className="p-10 bg-slate-50/80 flex flex-col items-center justify-center border-b lg:border-b-0 lg:border-r-4 border-slate-100 relative">
+                                            <div className="w-40 h-40 rounded-full bg-white p-2 mb-6 relative shadow-xl">
+                                                <img src={getBrandGif(racer.brand)} className="w-full h-full object-contain rounded-full bg-slate-50" />
+                                                <div className="absolute -bottom-2 -right-2 bg-yellow-400 text-yellow-900 w-12 h-12 flex items-center justify-center font-black rounded-full border-4 border-white text-2xl font-cute shadow-lg">#{actualRank}</div>
                                             </div>
-                                            <h2 className="text-3xl font-racing text-center mb-1">{racer.name}</h2>
-                                            <div className="flex gap-2">
-                                                <span className="px-2 py-0.5 bg-slate-700 rounded text-xs text-cyan-400 font-bold uppercase tracking-wider">{racer.brand}</span>
-                                                <span className="px-2 py-0.5 bg-slate-700 rounded text-xs text-slate-300 font-bold uppercase tracking-wider">{racer.shop}</span>
+                                            <h2 className="text-4xl font-cute font-bold text-center mb-3 text-slate-800">{racer.name}</h2>
+                                            <div className="flex gap-2 mb-8">
+                                                <span className="px-3 py-1 bg-white border-2 border-slate-200 rounded-full text-xs text-slate-600 font-bold uppercase tracking-wider shadow-sm">{racer.brand}</span>
+                                                <span className="px-3 py-1 bg-white border-2 border-slate-200 rounded-full text-xs text-slate-600 font-bold uppercase tracking-wider shadow-sm">{racer.shop}</span>
                                             </div>
                                             
                                             {/* Big Speedometer Number */}
-                                            <div className="mt-8 text-center">
-                                                <div className="text-xs text-slate-500 uppercase tracking-[0.2em] mb-1">總里程 (Total Distance)</div>
-                                                <div className="text-6xl font-numbers font-bold text-transparent bg-clip-text bg-gradient-to-b from-white to-slate-400 leading-none">
+                                            <div className="text-center bg-white p-6 rounded-3xl shadow-sm border-2 border-slate-100 w-full">
+                                                <div className="text-xs text-slate-400 uppercase tracking-[0.2em] mb-2 font-bold">總里程 (Total)</div>
+                                                <div className="text-7xl font-cute font-black text-green-500 leading-none">
                                                     {racer.sales.toFixed(1)}
                                                 </div>
-                                                <div className="text-cyan-500 text-sm font-bold mt-1">MILES</div>
+                                                <div className="text-slate-400 text-sm font-bold mt-1 tracking-widest">MILES</div>
                                             </div>
                                         </div>
 
                                         {/* Right: Data */}
-                                        <div className="lg:col-span-2 p-8">
-                                            <h4 className="text-slate-400 font-racing uppercase text-sm mb-6 flex items-center">
-                                                <Zap size={16} className="mr-2 text-yellow-500" /> 表現分析 (Performance Breakdown)
+                                        <div className="lg:col-span-2 p-10 bg-white">
+                                            <h4 className="text-slate-400 font-cute uppercase text-sm mb-8 flex items-center font-bold tracking-widest border-b-2 border-slate-100 pb-4">
+                                                <Zap size={20} className="mr-2 text-yellow-500" /> 表現詳細分析
                                             </h4>
                                             
-                                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                                                 {[
                                                     { 
                                                         label: "PN+ Paid Trial", 
                                                         count: breakdown.pnPaidTrial, 
-                                                        points: Math.floor(breakdown.pnPaidTrial / 2), // 2 units = 1 mile
-                                                        color: "teal" 
+                                                        points: Math.floor(breakdown.pnPaidTrial / 2), 
+                                                        color: "teal",
+                                                        icon: "🆕"
                                                     },
                                                     { 
                                                         label: "PN+ Package", 
                                                         count: breakdown.pnPackage, 
                                                         points: Math.floor(breakdown.pnPackage / 10000), 
                                                         color: "cyan",
-                                                        revenue: breakdown.pnPackage // Display raw revenue in subtext
+                                                        revenue: breakdown.pnPackage,
+                                                        icon: "⚡"
                                                     },
-                                                    { label: "PN+ Combo Sys", count: breakdown.combo, points: breakdown.combo * 2, color: "blue" },
-                                                    { label: "Plla 5 Prod", count: breakdown.plla, points: Math.floor(breakdown.plla / 3) * 2, color: "purple" }, // 3 units = 2 miles
-                                                    { label: "Polyca", count: breakdown.polyca, points: Math.floor(breakdown.polyca / 3) * 2, color: "orange" }, // 3 units = 2 miles
-                                                    { label: "Home Device", count: breakdown.home, points: breakdown.home * 2, color: "pink" },
+                                                    { label: "PN+ Combo Sys", count: breakdown.combo, points: breakdown.combo * 2, color: "blue", icon: "🚀" },
+                                                    { label: "Plla 5 Prod", count: breakdown.plla, points: Math.floor(breakdown.plla / 3) * 2, color: "purple", icon: "✨" },
+                                                    { label: "Polyca", count: breakdown.polyca, points: Math.floor(breakdown.polyca / 3) * 2, color: "orange", icon: "🔥" },
+                                                    { label: "Home Device", count: breakdown.home, points: breakdown.home * 2, color: "pink", icon: "🏠" },
                                                 ].map((item, idx) => (
-                                                    <div key={idx} className="bg-slate-800/50 rounded-lg p-4 border border-slate-700 hover:border-slate-600 transition-colors">
-                                                        <div className="flex justify-between items-center mb-2">
-                                                            <span className="text-slate-400 text-xs font-bold uppercase">{item.label}</span>
-                                                            <span className={`text-${item.color}-400 font-numbers text-xl font-bold`}>+{item.points} 英里</span>
+                                                    <div key={idx} className={`bg-${item.color}-50 rounded-2xl p-5 border-2 border-${item.color}-100 hover:shadow-md transition-shadow`}>
+                                                        <div className="flex justify-between items-center mb-3">
+                                                            <span className={`text-${item.color}-700 text-xs font-bold uppercase flex items-center`}>
+                                                                <span className="mr-2 text-lg">{item.icon}</span> {item.label}
+                                                            </span>
+                                                            <span className={`bg-white text-${item.color}-600 font-cute text-lg font-bold px-3 py-1 rounded-full shadow-sm`}>+{item.points} M</span>
                                                         </div>
-                                                        <div className="w-full bg-slate-700 h-1.5 rounded-full overflow-hidden">
-                                                            {/* Simple visual bar based on count relative to a guess max of 20 */}
-                                                            <div className={`h-full bg-${item.color}-500 w-1/2`} style={{ width: `${Math.min((item.revenue ? item.points : item.count) * 5, 100)}%` }}></div>
+                                                        <div className="w-full bg-white h-3 rounded-full overflow-hidden border border-${item.color}-200">
+                                                            <div className={`h-full bg-${item.color}-400 rounded-full`} style={{ width: `${Math.min((item.revenue ? item.points : item.count) * 10, 100)}%` }}></div>
                                                         </div>
-                                                        <div className="text-right text-[10px] text-slate-500 mt-1 font-mono">
+                                                        <div className="text-right text-xs text-${item.color}-600 mt-2 font-bold">
                                                             {item.label === "PN+ Package" 
                                                                 ? `金額: ${formatCurrency(item.revenue)}` 
                                                                 : `數量: ${item.count}`
@@ -868,11 +910,11 @@
                 </main>
 
                 {/* --- DATA SOURCE STATUS BAR (BOTTOM LEFT) --- */}
-                <div className="fixed bottom-4 left-4 z-50 text-[10px] text-slate-400 bg-white/80 px-2 py-1 rounded shadow-sm border border-slate-200 backdrop-blur-sm pointer-events-none">
+                <div className="fixed bottom-4 left-4 z-50 text-[10px] text-slate-500 bg-white/90 px-3 py-2 rounded-full shadow-lg border border-slate-200 backdrop-blur-sm pointer-events-none flex items-center gap-2">
                      {lastUpdated && !fetchError ? (
-                        <span className="flex items-center text-green-600"><span className="w-2 h-2 rounded-full bg-green-500 mr-2 animate-pulse"></span>已連接 Google Sheet (上次更新: {lastUpdated.toLocaleTimeString()})</span>
+                        <span className="flex items-center text-green-600 font-bold"><span className="w-2 h-2 rounded-full bg-green-500 mr-2 animate-pulse"></span>已連接 (Update: {lastUpdated.toLocaleTimeString()})</span>
                      ) : (
-                        <span className="flex items-center text-yellow-600"><span className="w-2 h-2 rounded-full bg-yellow-500 mr-2"></span>{fetchError ? '連接失敗: 使用演示數據' : '使用預設演示數據'}</span>
+                        <span className="flex items-center text-orange-500 font-bold"><span className="w-2 h-2 rounded-full bg-orange-500 mr-2"></span>{fetchError ? '連接失敗: 演示模式' : '演示模式'}</span>
                      )}
                 </div>
 
@@ -880,10 +922,10 @@
                 <div className="fixed bottom-6 right-6 flex flex-col gap-2 z-50">
                     <button 
                         onClick={fetchData}
-                        className={`p-4 bg-blue-600 text-white rounded-full shadow-2xl hover:bg-blue-700 transition-all group ${isLoading ? 'animate-spin' : ''}`}
+                        className={`p-4 bg-green-500 text-white rounded-full shadow-2xl hover:bg-green-600 hover:scale-110 transition-all group ${isLoading ? 'animate-spin' : ''}`}
                         title="立即刷新數據"
                     >
-                        <RotateCcw className="w-6 h-6" />
+                        <RefreshCw className="w-6 h-6" />
                     </button>
                 </div>
             </div>
