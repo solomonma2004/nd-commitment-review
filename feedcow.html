@@ -31,6 +31,7 @@
         .tab-active-Reenex { background-color: #15803d; color: white; border-color: #15803d; }
         .tab-active-Elyze { background-color: #a21caf; color: white; border-color: #a21caf; }
         
+        /* Subtle Progress background in cards */
         .strength-bar { 
             position: absolute; left: 0; top: 0; height: 100%; opacity: 0.12; 
             transition: width 1.2s cubic-bezier(0.34, 1.56, 0.64, 1); z-index: 0; 
@@ -42,17 +43,17 @@
 </head>
 <body class="pb-6 overflow-x-hidden">
 
+    <!-- 全域變數預定義，確保所有函數隨時可用 -->
     <script>
-        // --- 核心全域變數與配置 ---
         window.GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwFLJr6n8QGwaDb-hBjC6xOwd2ANzDyW1b-iInQfQkxZEDDmP1U6F5lJampP6JNWjR6/exec'; 
         window.currentLang = 'zh';
         window.currentRankBrand = 'Dermes';
         window.USERS = [];
 
-        const i18n = {
+        window.i18n = {
             zh: {
                 utilizeAi: "利用 AI 小店", make: "令", cust: "客人", bannerSlogan: "做任務贏取飼料 儲糧養肥牛",
-                leaderboardTitle: "肥牛排行榜", loading: "正在讀取數據...", tierTitle: "等級與獎項",
+                leaderboardTitle: "肥牛排行榜", loading: "正在讀取數據...", tierTitle: "牛牛進化階級與獎項",
                 feedGuideTitle: "飼料獲取攻略", startWeightLabel: "起始體重", ratioLabel: "成長換算",
                 searchTitle: "搜尋我的牛牛", allBrands: "所有品牌", allLocations: "所有樓層",
                 cardWeightLabel: "目前體重", cardFeedLabel: "累積飼料", unlockedTitle: "目前可獲獎勵",
@@ -66,7 +67,7 @@
             },
             en: {
                 utilizeAi: "Utilizing AI Shop", make: "Turning", cust: "Customers", bannerSlogan: "Complete Tasks to Grow Your Cow",
-                leaderboardTitle: "Fat Cow Ranking", loading: "Loading...", tierTitle: "Cow Tiers & Prizes",
+                leaderboardTitle: "Fat Cow Leaderboard", loading: "Loading...", tierTitle: "Cow Evolution Tiers",
                 feedGuideTitle: "Feed Acquisition Guide", startWeightLabel: "Start Weight", ratioLabel: "Ratio",
                 searchTitle: "Search My Cow", allBrands: "All Brands", allLocations: "All Floors",
                 cardWeightLabel: "Weight", cardFeedLabel: "Feeds", unlockedTitle: "Unlocked Reward",
@@ -80,16 +81,16 @@
             }
         };
 
-        const MILESTONES = [
-            { min: 300, max: 499, title: {zh: "瘦牛", en: "Lean Cow"}, color: "text-gray-400", barColor: "bg-gray-400", img: "https://i.postimg.cc/pdy5zLJq/Whats-App-Image-2026-01-16-at-15-00-48.jpg", reward: { zh: "繼續努力！", en: "Keep trying!" } }, 
-            { min: 500, max: 599, title: {zh: "澳洲牛", en: "Aus Beef"}, color: "text-green-700", barColor: "bg-green-500", img: "https://i.postimg.cc/52sFXCLL/Whats-App-Image-2026-01-16-at-15-01-13.jpg", reward: { zh: "Bicelle Mask X5", en: "Bicelle Mask X5" } }, 
-            { min: 600, max: 699, title: {zh: "美國牛", en: "US Beef"}, color: "text-blue-700", barColor: "bg-blue-500", img: "https://i.postimg.cc/9QLqD7ZP/Whats-App-Image-2026-01-16-at-15-00-50.jpg", reward: { zh: "Exuviance AP25 (4對)", en: "Exuviance AP25" } }, 
-            { min: 700, max: 799, title: {zh: "和牛", en: "Wagyu"}, color: "text-purple-700", barColor: "bg-purple-500", img: "https://i.postimg.cc/Bnm1jKH1/Whats-App-Image-2026-01-16-at-15-00-49.jpg", reward: { zh: "Celluion 活性膠原組合", en: "Celluion Kit" } }, 
-            { min: 800, max: 99999, title: {zh: "金牛", en: "Golden"}, color: "text-yellow-700 font-black", barColor: "bg-yellow-500", img: "https://i.postimg.cc/2S0B1Zhv/Whats-App-Image-2026-01-16-at-15-00-49-(1).jpg", reward: { zh: "Celluion 超聲波 PLLA", en: "Ultrasonic PLLA" } } 
+        window.MILESTONES = [
+            { min: 300, max: 499, title: {zh: "瘦牛", en: "Lean Cow"}, color: "text-gray-400", barColor: "bg-gray-400", img: "https://i.postimg.cc/pdy5zLJq/Whats-App-Image-2026-01-16-at-15-00-48.jpg", reward: { zh: "繼續努力！加油！", en: "Keep trying!" } }, 
+            { min: 500, max: 599, title: {zh: "信望愛澳洲牛", en: "FHL Australian Beef"}, color: "text-green-700", barColor: "bg-green-500", img: "https://i.postimg.cc/52sFXCLL/Whats-App-Image-2026-01-16-at-15-01-13.jpg", reward: { zh: "Bicelle 3D MASK X5", en: "Bicelle 3D Mask X5" } }, 
+            { min: 600, max: 699, title: {zh: "公義美國穀飼牛", en: "Righteous US Beef"}, color: "text-blue-700", barColor: "bg-blue-500", img: "https://i.postimg.cc/9QLqD7ZP/Whats-App-Image-2026-01-16-at-15-00-50.jpg", reward: { zh: "Exuviance AP25煥膚組合", en: "Exuviance AP25 Kit" } }, 
+            { min: 700, max: 799, title: {zh: "平安日本和牛", en: "Peaceful Japanese Wagyu"}, color: "text-purple-700", barColor: "bg-purple-500", img: "https://i.postimg.cc/Bnm1jKH1/Whats-App-Image-2026-01-16-at-15-00-49.jpg", reward: { zh: "Celluion 活性膠原組合", en: "Celluion Kit" } }, 
+            { min: 800, max: 99999, title: {zh: "喜樂豐盛金牛", en: "Joyful Abundant Golden Cow"}, color: "text-yellow-700 font-black", barColor: "bg-yellow-500", img: "https://i.postimg.cc/2S0B1Zhv/Whats-App-Image-2026-01-16-at-15-00-49-(1).jpg", reward: { zh: "Celluion 超聲波 PLLA 套裝", en: "Celluion PLLA Set" } } 
         ];
 
-        function getCowStatus(w) { return MILESTONES.find(m => w >= m.min && w <= m.max) || MILESTONES[0]; }
-        function getNextMilestone(w) { return MILESTONES.find(m => m.min > w); }
+        function getCowStatus(w) { return window.MILESTONES.find(m => w >= m.min && w <= m.max) || window.MILESTONES[0]; }
+        function getNextMilestone(w) { return window.MILESTONES.find(m => m.min > w); }
         function calculateStats(t1, t2, t3, t4) {
             const cappedT3 = Math.min(25, t3);
             const totalFeeds = (t1 * 1) + (t2 * 2) + (cappedT3 * 2) + (t4 * 3);
@@ -101,95 +102,87 @@
 
     <!-- Language Switcher -->
     <div class="fixed top-4 right-4 z-[100] flex gap-1 bg-white/90 backdrop-blur-md p-1.5 rounded-full shadow-lg border border-gray-100">
-        <button onclick="changeLanguage('zh')" id="btn-zh" class="px-4 py-1.5 rounded-full text-sm font-black transition-all bg-red-600 text-white shadow-md">中</button>
-        <button onclick="changeLanguage('en')" id="btn-en" class="px-4 py-1.5 rounded-full text-sm font-black text-gray-500 hover:bg-gray-100">EN</button>
+        <button onclick="changeLanguage('zh')" id="btn-zh" class="px-3 py-1 rounded-full text-xs font-black transition-all bg-red-600 text-white shadow-md">中</button>
+        <button onclick="changeLanguage('en')" id="btn-en" class="px-3 py-1 rounded-full text-xs font-black text-gray-500 hover:bg-gray-100">EN</button>
     </div>
 
-    <!-- Header Poster -->
+    <!-- Header Image -->
     <div class="relative w-screen ml-[calc(-50vw+50%)]">
         <img src="https://i.postimg.cc/dVZ3Wyrh/Whats-App-Image-2026-01-16-at-13-05-41.jpg" alt="Poster" class="w-full h-auto block">
     </div>
 
     <!-- Intro Header Section -->
     <div class="relative w-screen ml-[calc(-50vw+50%)] shadow-2xl overflow-hidden bg-red-900 group flex items-center justify-center py-6 border-b-4 border-yellow-500 text-center md:text-left">
-        <div class="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-red-800 to-red-950 z-0"></div>
+        <div class="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-red-800 to-red-950 z-0 opacity-80"></div>
         <div class="relative z-10 w-full max-w-7xl px-4 sm:px-8 md:px-20 text-white flex flex-col md:flex-row items-center justify-between gap-6 md:gap-10">
-            <div class="flex-1 flex flex-col justify-center space-y-2">
-                <div class="inline-flex items-center justify-center md:justify-start gap-2 mb-1">
-                    <span class="h-2 w-10 bg-yellow-400 rounded-full"></span>
-                    <span id="txt-utilize-ai" class="text-yellow-300 font-black tracking-[0.15em] text-sm uppercase">利用 AI 小店</span>
-                </div>
-                <h2 class="text-5xl sm:text-6xl lg:text-8xl font-black leading-none drop-shadow-2xl tracking-tighter">
-                    <span id="txt-make">令</span><span class="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-orange-300 to-yellow-300 animate-pulse">20,000</span><span id="txt-cust">客人</span>
+            <div class="flex-1 flex flex-col justify-center space-y-1">
+                <h2 class="text-4xl sm:text-5xl lg:text-7xl font-black leading-none tracking-tighter">
+                    <span id="txt-make">令</span><span class="text-yellow-400">20,000</span><span id="txt-cust">客人</span>
                 </h2>
-                <div class="mt-4 inline-block bg-white/10 backdrop-blur-md border border-white/20 px-6 py-3 rounded-2xl shadow-xl text-center">
-                    <p id="txt-banner-slogan" class="text-2xl sm:text-3xl font-black text-yellow-400 tracking-wider">做任務贏取飼料 儲糧養肥牛</p>
+                <div class="mt-2 inline-block bg-white/10 border border-white/20 px-4 py-1.5 rounded-xl">
+                    <p id="txt-banner-slogan" class="text-lg sm:text-xl font-black text-yellow-400 tracking-wider">做任務贏取飼料 儲糧養肥牛</p>
                 </div>
             </div>
-            <div class="flex-1 flex flex-col items-center md:items-end justify-center mt-4 md:mt-0">
-                <div id="txt-event-title" class="text-lg sm:text-xl font-black bg-yellow-500 text-red-900 px-6 py-2 mt-4 transform -skew-x-12 inline-block shadow-2xl uppercase tracking-widest border-2 border-red-700/20">全民養牛 • 玩出豐盛</div>
-            </div>
+            <div id="txt-event-title" class="text-xs sm:text-sm font-black bg-yellow-500 text-red-900 px-4 py-1.5 mt-2 transform -skew-x-12 inline-block shadow-lg uppercase tracking-widest">全民養牛 • 玩出豐盛</div>
         </div>
     </div>
 
-    <!-- Top 10 Leaderboard (COMPACTED) -->
+    <!-- Top 10 Leaderboard (Compact) -->
     <section class="px-2 pb-10 relative z-0 fence-bg pt-10 shadow-inner text-center">
-        <div class="w-full max-w-[98%] mx-auto relative z-10">
-           <div class="flex flex-col items-center justify-center gap-2 mb-10">
-                <div class="flex items-center gap-4 bg-white/25 backdrop-blur-md px-8 py-4 rounded-full border-2 border-white/60 shadow-2xl">
-                    <i data-lucide="trophy" class="w-8 h-8 md:w-16 md:h-16 text-yellow-300 drop-shadow-[0_0_15px_rgba(253,224,71,0.7)]"></i>
-                    <h2 id="txt-leaderboard-title" class="font-black text-white text-3xl md:text-7xl tracking-tighter">肥牛排行榜</h2>
+        <div class="w-full max-w-4xl mx-auto relative z-10">
+           <div class="flex flex-col items-center justify-center gap-2 mb-8">
+                <div class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-md px-6 py-2.5 rounded-full border-2 border-white/50 shadow-lg">
+                    <i data-lucide="trophy" class="w-6 h-6 text-yellow-300"></i>
+                    <h2 id="txt-leaderboard-title" class="font-black text-white text-2xl md:text-5xl tracking-tighter">肥牛排行榜</h2>
                 </div>
-                <div class="bg-red-600/90 text-white px-8 py-1.5 rounded-full text-lg md:text-3xl font-black animate-pulse shadow-xl">LIVE UPDATE</div>
+                <div class="bg-red-600/90 text-white px-6 py-1 rounded-full text-lg md:text-2xl font-black animate-pulse shadow-lg">LIVE UPDATE</div>
            </div>
-
            <div id="loading-indicator" class="flex flex-col items-center justify-center py-10">
-               <div class="w-12 h-12 border-4 border-yellow-400 border-t-transparent rounded-full animate-spin mb-4"></div>
-               <p id="txt-loading" class="text-white text-xl font-black animate-pulse">正在讀取牧場數據...</p>
+               <div class="w-10 h-10 border-4 border-yellow-400 border-t-transparent rounded-full animate-spin mb-4"></div>
+               <p id="txt-loading" class="text-white text-sm font-black animate-pulse">正在讀取數據...</p>
            </div>
-
-           <div id="leaderboard-grid" class="grid grid-cols-2 md:grid-cols-3 gap-x-3 gap-y-10 px-1 lg:px-16"></div>
+           <div id="leaderboard-grid" class="grid grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-10 px-2"></div>
         </div>
     </section>
 
-    <!-- Combined Floor Intelligence Board (Compact) -->
+    <!-- Combined Floor Intelligence Board (Extreme Compact) -->
     <section class="px-2 py-10 relative z-10 bg-white border-t border-b border-gray-100 shadow-sm overflow-hidden">
         <div class="max-w-4xl mx-auto">
-            <div class="text-center mb-6 px-4">
-                <h3 id="txt-floor-rank-title" class="text-3xl md:text-6xl font-black text-gray-800 flex flex-col items-center justify-center gap-2 leading-tight">
-                    <i data-lucide="shield-check" class="w-10 h-10 md:w-16 md:h-16 text-blue-600"></i>品牌樓層實力看板
+            <div class="text-center mb-6">
+                <h3 id="txt-floor-rank-title" class="text-2xl md:text-5xl font-black text-gray-800 flex flex-col items-center justify-center gap-2 tracking-tight">
+                    <i data-lucide="shield-check" class="w-10 h-10 text-blue-600"></i>品牌樓層實力看板
                 </h3>
-                <button onclick="toggleMissionModal(true)" class="inline-flex items-center gap-2 mt-4 px-4 py-1.5 rounded-full bg-blue-100 text-blue-600 hover:bg-blue-600 hover:text-white transition-all shadow-sm active:scale-95 text-xs font-black">
+                <button onclick="toggleMissionModal(true)" class="inline-flex items-center gap-2 mt-4 px-4 py-1.5 rounded-full bg-blue-100 text-blue-600 hover:bg-blue-600 hover:text-white transition-all shadow-sm text-xs font-black">
                     <i data-lucide="info" class="w-4 h-4"></i> <span id="txt-btn-explain">圖標說明</span>
                 </button>
             </div>
-
-            <!-- Brand Selection Tabs -->
-            <div class="flex justify-center p-1.5 bg-gray-200/50 rounded-[2.5rem] mb-8 shadow-inner max-w-sm mx-auto border border-gray-200">
-                <button onclick="switchRankBrand('Dermes')" id="tab-Dermes" class="flex-1 py-3 px-2 rounded-[2rem] text-xs md:text-base font-black transition-all tab-active-Dermes shadow-md">Dermes</button>
-                <button onclick="switchRankBrand('Reenex')" id="tab-Reenex" class="flex-1 py-3 px-2 rounded-[2rem] text-xs md:text-base font-black transition-all text-gray-500">Reenex</button>
-                <button onclick="switchRankBrand('Elyze')" id="tab-Elyze" class="flex-1 py-3 px-2 rounded-[2rem] text-xs md:text-base font-black transition-all text-gray-500">Elyze</button>
+            <!-- Brand Tabs -->
+            <div class="flex justify-center p-1 bg-gray-100 rounded-2xl mb-8 max-w-xs mx-auto border border-gray-200">
+                <button onclick="switchRankBrand('Dermes')" id="tab-Dermes" class="flex-1 py-2.5 px-2 rounded-xl text-xs font-black transition-all tab-active-Dermes">Dermes</button>
+                <button onclick="switchRankBrand('Reenex')" id="tab-Reenex" class="flex-1 py-2.5 px-2 rounded-xl text-xs font-black transition-all text-gray-500">Reenex</button>
+                <button onclick="switchRankBrand('Elyze')" id="tab-Elyze" class="flex-1 py-2.5 px-2 rounded-xl text-xs font-black transition-all text-gray-500">Elyze</button>
             </div>
-
-            <div id="combined-floor-content" class="space-y-3 px-1 min-h-[400px]"></div>
+            <!-- Rows -->
+            <div id="combined-floor-content" class="space-y-3 px-1 min-h-[300px]"></div>
         </div>
     </section>
 
     <!-- Mission Legend Modal -->
-    <div id="mission-modal" class="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md hidden" onclick="toggleMissionModal(false)">
-        <div class="bg-white rounded-[3rem] w-full max-w-sm p-8 shadow-2xl animate-modal border-2 border-blue-50" onclick="event.stopPropagation()">
+    <div id="mission-modal" class="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-black/70 backdrop-blur-md hidden" onclick="toggleMissionModal(false)">
+        <div class="bg-white rounded-[2.5rem] w-full max-w-sm p-8 shadow-2xl animate-modal border-2 border-blue-50" onclick="event.stopPropagation()">
             <div class="flex justify-between items-center mb-6">
                 <h4 id="txt-modal-title" class="text-xl font-black text-gray-800 uppercase tracking-tight">任務說明</h4>
-                <button onclick="toggleMissionModal(false)" class="text-gray-400 hover:text-red-500 transition-colors"><i data-lucide="x-circle" class="w-10 h-10"></i></button>
+                <button onclick="toggleMissionModal(false)" class="text-gray-400 hover:text-red-500"><i data-lucide="x-circle" class="w-8 h-8"></i></button>
             </div>
             <div id="modal-tasks-container" class="space-y-4"></div>
-            <button onclick="toggleMissionModal(false)" id="txt-modal-close" class="w-full mt-10 py-5 bg-blue-600 text-white rounded-2xl text-xl font-black shadow-xl">我知道了</button>
+            <button onclick="toggleMissionModal(false)" id="txt-modal-close" class="w-full mt-8 py-4 bg-blue-600 text-white rounded-2xl text-lg font-black shadow-xl">我知道了</button>
         </div>
     </div>
 
-    <!-- Tier & Guide (Compact) -->
+    <!-- Evolution & Guide (Compact) -->
     <section class="px-3 py-10 relative z-10 bg-[#FFF3E0]">
         <div class="max-w-md mx-auto space-y-8">
+             <!-- 1. Compact Tier List -->
              <div class="shadow-xl rounded-2xl overflow-hidden border-4 border-[#8D6E63] bg-white relative">
                  <h4 class="font-black text-[#5D4037] text-lg p-3 bg-[#FFECB3] border-b-2 border-[#8D6E63] flex items-center justify-center gap-2 uppercase tracking-wide">
                     <i data-lucide="award" class="w-5 h-5 text-yellow-700"></i> <span id="txt-tier-title">等級與獎項</span>
@@ -197,63 +190,50 @@
                  <div id="tier-list-container" class="divide-y divide-gray-100"></div>
              </div>
 
+             <!-- 2. Compact Tasks (2x2 Grid) -->
              <div class="bg-white rounded-[2rem] p-6 shadow-2xl border-4 border-orange-200 relative overflow-hidden">
                  <h4 class="font-black text-orange-900 text-xl mb-6 flex items-center gap-4 border-b-2 border-orange-100 pb-4">
                     <i data-lucide="flame" class="w-8 h-8 text-red-500 fill-red-500"></i> <span id="txt-feed-guide-title">飼料獲取攻略</span>
                  </h4>
                  <div id="tasks-container" class="grid grid-cols-2 gap-3 text-left"></div>
-                 <div class="mt-8 bg-gradient-to-br from-orange-100 via-orange-50 to-orange-100 rounded-3xl p-6 text-center shadow-inner border border-orange-200">
-                     <div class="flex justify-around items-center">
-                         <div class="flex flex-col"><span id="txt-start-weight-label" class="text-xs text-orange-800 font-black uppercase tracking-widest">起始體重</span><span class="text-3xl font-black text-red-600">300kg</span></div>
-                         <div class="h-12 w-0.5 bg-orange-300/50"></div>
-                         <div class="flex flex-col"><span id="txt-ratio-label" class="text-xs text-orange-800 font-black uppercase tracking-widest">成長換算</span><span id="txt-ratio-value" class="text-3xl font-black text-orange-700">1份 = +5kg</span></div>
-                     </div>
-                </div>
+                 <div class="mt-8 bg-gradient-to-br from-orange-100 via-orange-50 to-orange-100 rounded-3xl p-6 text-center shadow-inner border border-orange-200 flex justify-around">
+                    <div class="flex flex-col"><span id="txt-start-weight-label" class="text-[10px] text-orange-800 font-bold">起始體重</span><span class="text-xl font-black text-red-600">300kg</span></div>
+                    <div class="flex flex-col"><span id="txt-ratio-label" class="text-[10px] text-orange-800 font-bold">成長換算</span><span id="txt-ratio-value" class="text-xl font-black text-orange-700">1份 = +5kg</span></div>
+                 </div>
              </div>
         </div>
     </section>
 
-    <!-- Search My Cow (Compact) -->
-    <section class="px-4 py-16 bg-white border-t border-gray-100 relative shadow-inner">
+    <!-- Search Section (Compact) -->
+    <section class="px-4 py-16 bg-white border-t border-gray-100">
          <div class="max-w-md mx-auto">
-             <h2 class="text-center font-black text-gray-800 text-2xl mb-8 flex items-center justify-center gap-3">
-                 <i data-lucide="search" class="w-8 h-8 text-red-500"></i> <span id="txt-search-title">搜尋我的牛牛</span>
-             </h2>
+             <h2 id="txt-search-title" class="text-center font-black text-gray-800 text-2xl mb-8 flex items-center justify-center gap-3">搜尋我的牛牛</h2>
              <div class="grid grid-cols-2 gap-3 mb-4">
-                 <select id="brand-filter" class="block w-full px-4 py-3 border-2 border-gray-200 rounded-2xl text-base bg-gray-50 text-gray-700 focus:border-red-500 font-black appearance-none">
-                    <option id="opt-all-brands" value="">所有品牌</option>
-                    <option value="Dermes">Dermes</option>
-                    <option value="Reenex">Reenex</option>
-                    <option value="Elyze">Elyze</option>
-                 </select>
-                 <select id="location-filter" class="block w-full px-4 py-3 border-2 border-gray-200 rounded-2xl text-base bg-gray-50 text-gray-700 focus:border-red-500 font-black appearance-none">
-                    <option id="opt-all-locations" value="">所有樓層</option>
-                 </select>
+                 <select id="brand-filter" class="block w-full px-4 py-3 border-2 border-gray-200 rounded-2xl text-base bg-gray-50 focus:border-red-500 font-black appearance-none"><option value="">所有品牌</option><option value="Dermes">Dermes</option><option value="Reenex">Reenex</option><option value="Elyze">Elyze</option></select>
+                 <select id="location-filter" class="block w-full px-4 py-3 border-2 border-gray-200 rounded-2xl text-base bg-gray-50 focus:border-red-500 font-black appearance-none"><option value="">所有樓層</option></select>
              </div>
-             <div class="relative mb-8"><select id="user-select" class="block w-full px-5 py-4 border-2 border-red-100 rounded-[1.5rem] bg-white text-gray-900 focus:border-red-500 font-black shadow-lg appearance-none"></select></div>
+             <div class="relative mb-8"><select id="user-select" class="block w-full px-5 py-4 border-2 border-red-100 rounded-[1.5rem] bg-white focus:border-red-500 font-black shadow-lg appearance-none"></select></div>
              
+             <!-- Compact Personal Card -->
              <div id="user-card" class="bg-[#FFF8E1] rounded-[2rem] p-4 border-4 border-[#8D6E63] relative hidden shadow-2xl animate-modal overflow-hidden">
-                <div class="flex items-start gap-4 mb-4 relative z-10">
+                <div class="flex items-start gap-4 mb-4 relative z-10 text-left">
                     <div class="w-24 h-18 shrink-0 cow-image-container border-2 border-white shadow-md"><img id="card-cow-img" src="" alt="Cow"></div>
                     <div class="flex-1 min-w-0">
-                        <div class="flex justify-between items-start mb-1"><h3 id="card-name" class="text-2xl font-black text-[#3E2723] tracking-tighter truncate">姓名</h3><span id="card-rank" class="bg-yellow-400 text-yellow-900 px-2 py-0.5 rounded-lg text-sm font-black shadow-md border-2 border-white"># -</span></div>
+                        <div class="flex justify-between items-start mb-1"><h3 id="card-name" class="text-2xl font-black text-[#3E2723] truncate">姓名</h3><span id="card-rank" class="bg-yellow-400 text-yellow-900 px-2 py-0.5 rounded-lg text-sm font-black shadow-md border-2 border-white"># -</span></div>
                         <div class="flex gap-1 mb-2"><span id="card-brand" class="brand-badge text-[8px]">BRAND</span><span id="card-location" class="bg-[#8D6E63] text-white px-2 py-0.5 rounded-full text-[8px] font-black uppercase shadow-sm">LOC</span></div>
-                        <div class="flex items-baseline gap-2"><span id="card-weight" class="text-3xl font-black text-red-600 leading-none">0kg</span><span id="card-level-title" class="text-[10px] font-black text-[#8D6E63] uppercase tracking-tighter truncate">等級</span></div>
+                        <div class="flex items-baseline gap-2"><span id="card-weight" class="text-3xl font-black text-red-600 leading-none">0kg</span><span id="card-level-title" class="text-[10px] font-black text-[#8D6E63] uppercase truncate">等級</span></div>
                     </div>
                 </div>
                 <div id="unlocked-reward-panel" class="bg-yellow-50/80 rounded-xl p-2.5 border-2 border-yellow-200 mb-4 flex items-center gap-3 shadow-inner">
                     <div class="w-8 h-8 bg-yellow-400 rounded-lg flex items-center justify-center shrink-0 border border-white shadow-sm"><i data-lucide="gift" class="w-4 h-4 text-white"></i></div>
-                    <div class="min-w-0 flex-1"><div class="text-[8px] text-yellow-700 font-black uppercase tracking-widest leading-none mb-1"><span id="txt-unlocked-title">目前獎勵</span></div><div id="card-reward-name" class="text-xs font-black text-gray-800 leading-tight truncate">Reward Info</div></div>
+                    <div class="min-w-0 flex-1"><div class="text-[8px] text-yellow-700 font-black uppercase mb-1">目前獎勵</div><div id="card-reward-name" class="text-xs font-black text-gray-800 leading-tight truncate">Reward</div></div>
                 </div>
-                <div class="bg-white rounded-xl p-3 border-2 border-[#FFE082] mb-4 shadow-sm relative">
-                    <div class="flex justify-between text-[10px] font-black text-[#5D4037] mb-1"><span>PROGRESS</span><span id="card-next-level" class="text-red-500 italic">NEXT GOAL</span></div>
-                    <div class="w-full bg-gray-100 rounded-full h-1.5 overflow-hidden border border-gray-100 shadow-inner"><div id="card-progress-bar" class="bg-gradient-to-r from-green-400 via-green-500 to-green-600 h-full transition-all duration-1000 shadow-inner"></div></div>
+                <div class="bg-white rounded-xl p-3 border-2 border-[#FFE082] mb-4 shadow-sm relative text-center">
+                    <div class="flex justify-between text-[10px] font-black text-[#5D4037] mb-1"><span>PROGRESS</span><span id="card-next-level" class="text-red-500 italic">GOAL</span></div>
+                    <div class="w-full bg-gray-100 rounded-full h-1.5 overflow-hidden border border-gray-100 shadow-inner"><div id="card-progress-bar" class="bg-gradient-to-r from-green-400 via-green-500 to-green-600 h-full"></div></div>
                     <p id="card-diff-text" class="text-[9px] text-center text-gray-400 mt-1 font-bold italic">努力中...</p>
                 </div>
-                <div class="border-t-2 border-[#D7CCC8] pt-4 border-dashed text-center">
-                    <h4 class="font-black text-[#5D4037] text-[10px] mb-3 flex items-center justify-center gap-2 bg-[#D7CCC8]/30 py-1 rounded-full mx-auto w-max px-4 uppercase tracking-widest"><i data-lucide="clipboard-list" class="w-3 h-3"></i> <span id="txt-report-card-title">任務成績單</span></h4>
-                    <div id="card-tasks-grid" class="grid grid-cols-2 gap-2 text-[10px]"></div>
-                </div>
+                <div class="border-t-2 border-[#D7CCC8] pt-4 border-dashed text-center"><div id="card-tasks-grid" class="grid grid-cols-2 gap-2 text-[10px]"></div></div>
              </div>
          </div>
     </section>
@@ -261,40 +241,72 @@
     <footer class="text-center text-gray-400 text-xs py-10 font-bold opacity-60 uppercase tracking-widest">© 2026 Neoderm New Year Event</footer>
 
     <script>
-        // --- UI Rendering Engine ---
+        // --- 核心函數 ---
+        function changeLanguage(lang) {
+            window.currentLang = lang;
+            const bZh = document.getElementById('btn-zh');
+            const bEn = document.getElementById('btn-en');
+            if(bZh) bZh.className = `px-3 py-1 rounded-full text-xs font-black transition-all ${lang === 'zh' ? 'bg-red-600 text-white shadow-md' : 'text-gray-500'}`;
+            if(bEn) bEn.className = `px-3 py-1 rounded-full text-xs font-black transition-all ${lang === 'en' ? 'bg-red-600 text-white shadow-md' : 'text-gray-500'}`;
+            updateUI();
+        }
+
         function updateUI() {
-            if (typeof i18n === 'undefined') return;
-            const lang = i18n[window.currentLang];
+            if (typeof window.i18n === 'undefined') return;
+            const lang = window.i18n[window.currentLang];
             
             document.querySelectorAll("[id^='txt-']").forEach(el => {
                 const key = el.id.replace('txt-', '');
                 if (lang[key]) {
-                    if (el.id === 'txt-floor-rank-title') el.innerHTML = `<i data-lucide="shield-check" class="w-8 h-8 md:w-16 md:h-16 text-blue-600"></i> ${lang[key]}`;
+                    if (el.id === 'txt-floor-rank-title') el.innerHTML = `<i data-lucide="shield-check" class="w-7 h-7 text-blue-600"></i> ${lang[key]}`;
                     else el.textContent = lang[key];
                 }
             });
 
             if(document.getElementById('opt-all-brands')) document.getElementById('opt-all-brands').textContent = lang.allBrands;
-            if(document.getElementById('opt-all-locations')) document.getElementById('opt-all-locations').textContent = lang.allLocations;
 
+            // Modal Legend
             const modalCont = document.getElementById('modal-tasks-container');
             if(modalCont) {
                 const taskList = [{ icon: "👀", label: "Task 1", text: lang.task1 }, { icon: "🏪", label: "Task 2", text: lang.task2 }, { icon: "🧧", label: "Task 3", text: lang.task3 }, { icon: "🤝", label: "Task 4", text: lang.task4 }];
                 modalCont.innerHTML = taskList.map(t => `<div class="flex items-start gap-4 p-4 rounded-3xl bg-orange-50/50 border border-orange-100 text-left"><span class="text-3xl">${t.icon}</span><div><div class="text-[10px] text-orange-600 font-black uppercase mb-0.5">${t.label}</div><div class="text-sm font-bold text-gray-700 leading-tight">${t.text}</div></div></div>`).join('');
             }
 
+            // --- RESTORED & COMPACTED TIER LIST ---
             const tl = document.getElementById('tier-list-container');
             if(tl) {
-                tl.innerHTML = [...MILESTONES].reverse().map((m, idx) => {
+                tl.innerHTML = [...window.MILESTONES].reverse().map((m, idx) => {
                     const isGold = m.min >= 800;
-                    return `<div class="flex items-center gap-3 p-2 px-4 ${isGold ? 'bg-yellow-50' : 'bg-white'}"><div class="w-10 h-10 rounded-full overflow-hidden shrink-0 border-2 border-white shadow-sm bg-gray-50 flex items-center justify-center"><img src="${m.img}" class="w-full h-full object-contain ${m.min < 500 ? 'grayscale opacity-60' : ''}"></div><div class="flex-1 min-w-0 text-left"><div class="flex items-center justify-between gap-2"><span class="text-xs font-black text-gray-800 truncate">${m.title[window.currentLang]}</span><span class="text-[10px] font-black ${isGold ? 'text-yellow-600' : 'text-gray-400'} shrink-0">${m.min}kg+</span></div><div class="text-[9px] text-gray-500 truncate italic leading-tight">${m.reward[window.currentLang]}</div></div></div>`;
+                    return `
+                        <div class="flex items-center gap-3 p-2 px-4 ${isGold ? 'bg-yellow-50' : 'bg-white'}">
+                            <div class="w-10 h-10 rounded-full overflow-hidden shrink-0 border-2 border-white shadow-sm bg-gray-50 flex items-center justify-center">
+                                <img src="${m.img}" class="w-full h-full object-contain ${m.min < 500 ? 'grayscale opacity-60' : ''}">
+                            </div>
+                            <div class="flex-1 min-w-0 text-left">
+                                <div class="flex items-center justify-between gap-2">
+                                    <span class="text-xs font-black text-gray-800 truncate">${m.title[window.currentLang]}</span>
+                                    <span class="text-[10px] font-black ${isGold ? 'text-yellow-600' : 'text-gray-400'} shrink-0">${m.min}kg+</span>
+                                </div>
+                                <div class="text-[9px] text-gray-500 truncate italic leading-tight">${m.reward[window.currentLang]}</div>
+                            </div>
+                        </div>
+                    `;
                 }).join('');
             }
 
+            // Compact 2x2 Grid Task Guides
             const tc = document.getElementById('tasks-container');
             if(tc) {
                 const td = [{ icon: "👀", title: lang.task1, reward: "x1" }, { icon: "🏪", title: lang.task2, reward: "x2" }, { icon: "🧧", title: lang.task3, reward: "x2" }, { icon: "🤝", title: lang.task4, reward: "x3" }];
-                tc.innerHTML = td.map((t, i) => `<div class="flex flex-col gap-2 bg-orange-50/40 p-3 rounded-2xl border border-orange-100 shadow-sm transition-all hover:bg-orange-50 group text-left"><div class="flex justify-between items-center"><span class="text-xl group-hover:scale-110 transition-transform">${t.icon}</span><span class="bg-orange-600 text-white px-2 py-0.5 rounded-lg font-black text-[10px] shadow-sm">${t.reward}</span></div><div class="text-[10px] font-black text-gray-700 leading-tight h-8 line-clamp-2">${t.title}</div></div>`).join('');
+                tc.innerHTML = td.map((t, i) => `
+                    <div class="flex flex-col gap-2 bg-orange-50/40 p-3 rounded-2xl border border-orange-100 shadow-sm text-left transition-all hover:bg-orange-50 group">
+                        <div class="flex justify-between items-center">
+                            <span class="text-xl group-hover:scale-110 transition-transform">${t.icon}</span>
+                            <span class="bg-orange-600 text-white px-2 py-0.5 rounded-lg font-black text-[10px] shadow-sm">x${t.reward.replace('x','')}</span>
+                        </div>
+                        <div class="text-[10px] font-black text-gray-700 leading-tight h-8 line-clamp-2">${t.title}</div>
+                    </div>
+                `).join('');
             }
 
             populateFilterOptions();
@@ -308,7 +320,7 @@
             window.currentRankBrand = b;
             ['Dermes', 'Reenex', 'Elyze'].forEach(tab => {
                 const btn = document.getElementById(`tab-${tab}`);
-                if(btn) btn.className = `flex-1 py-3 px-2 rounded-[2rem] text-xs md:text-base font-black transition-all ${tab === b ? `tab-active-${tab} shadow-xl` : 'text-gray-400'}`;
+                if(btn) btn.className = `flex-1 py-3 px-2 rounded-[2rem] text-xs md:text-base font-black transition-all ${tab === b ? `tab-active-${tab} shadow-xl` : 'text-gray-500'}`;
             });
             renderCombinedFloorDashboard();
         }
@@ -316,7 +328,6 @@
         function renderCombinedFloorDashboard() {
             const container = document.getElementById('combined-floor-content');
             if(!container) return;
-            const lang = i18n[window.currentLang];
             const brand = window.currentRankBrand;
             const prefix = brand === 'Dermes' ? 'D' : brand === 'Reenex' ? 'R' : 'E';
             const floorStats = {};
@@ -330,7 +341,7 @@
                     floorStats[loc].t1 += u.task1; floorStats[loc].t2 += u.task2; floorStats[loc].t3 += u.task3; floorStats[loc].t4 += u.task4;
                     floorStats[loc].count += 1;
                     const s = getCowStatus(u.weight);
-                    const mIdx = MILESTONES.findIndex(m => m.min === s.min);
+                    const mIdx = window.MILESTONES.findIndex(m => m.min === s.min);
                     if(mIdx !== -1) floorStats[loc].dist[mIdx]++;
                 }
             });
@@ -372,7 +383,7 @@
             if (!user) return;
             const uCard = document.getElementById('user-card');
             if(!uCard) return;
-            const rank = window.USERS.findIndex(u => u.id == userId) + 1, status = getCowStatus(user.weight), next = getNextMilestone(user.weight), lang = i18n[window.currentLang];
+            const rank = window.USERS.findIndex(u => u.id == userId) + 1, status = getCowStatus(user.weight), next = getNextMilestone(user.weight), lang = window.i18n[window.currentLang];
             const safeSetText = (id, val) => { const el = document.getElementById(id); if(el) el.textContent = val; };
             safeSetText('card-name', user.name); safeSetText('card-rank', `# ${rank}`); safeSetText('card-weight', `${user.weight}kg`); safeSetText('card-feeds', `${user.feeds}${window.currentLang === 'zh' ? '份' : ''}`); safeSetText('card-level-title', status.title[window.currentLang]);
             const cBrand = document.getElementById('card-brand'); if(cBrand) { cBrand.textContent = user.brand; cBrand.className = `brand-badge brand-${user.brand} text-[9px]`; }
@@ -396,7 +407,7 @@
                     return { id: parseInt(getProp(item, ["id", "ID"])) || 0, name: getProp(item, ["name", "Name"]), brand: getProp(item, ["brand", "Brand"]), location: getProp(item, ["location", "Location"]), task1: t1, task2: t2, task3: t3, task4: t4, feeds: stats.totalFeeds, weight: stats.weight };
                 }).filter(u => u.name).sort((a, b) => b.weight - a.weight);
                 updateUI(); 
-            } catch (error) { if(loading) loading.innerHTML = `<p class="text-red-500 font-black px-6 text-sm italic">數據讀取失敗。</p>`; } finally { if (loading) loading.classList.add('hidden'); }
+            } catch (error) { console.error("Fetch error:", error); if(loading) loading.innerHTML = `<p class="text-red-500 font-black px-6 text-sm italic text-center">數據讀取失敗。</p>`; } finally { if (loading) loading.classList.add('hidden'); }
         }
 
         function renderLeaderboard() {
@@ -412,13 +423,6 @@
                 card.innerHTML = `<div class="cow-image-container mb-2 transition-all duration-300 relative shadow-2xl"><img src="${status.img}" alt="${status.title[window.currentLang]}" onerror="this.src='https://placehold.co/640x480?text=Loading';"><div class="absolute top-2 left-2 rounded-full flex items-center justify-center font-black rank-badge ${rs}">${rank}</div><div class="absolute bottom-2 right-2 bg-white/95 px-3 py-1 rounded text-sm font-black text-red-600 shadow-md ring-1 ring-red-100">${user.weight}kg</div></div><div class="bg-white/95 backdrop-blur-sm rounded-xl p-3 shadow-xl border-2 ${rank <= 3 ? 'border-yellow-200' : 'border-white'} text-center w-full relative z-30"><div class="text-[13px] font-black text-gray-800 truncate tracking-tighter leading-tight">${user.name}</div><div class="flex justify-center gap-1 mt-1 mb-1"><span class="brand-badge brand-${user.brand} scale-75">${user.brand}</span><span class="bg-gray-100 text-gray-500 text-[9px] px-2 rounded-full font-black flex items-center">${user.location}</span></div><div class="text-[10px] font-black tracking-tighter leading-tight ${status.color}">${status.title[window.currentLang]}</div></div>`;
                 grid.appendChild(card);
             });
-        }
-
-        function changeLanguage(lang) {
-            window.currentLang = lang;
-            if(document.getElementById('btn-zh')) document.getElementById('btn-zh').className = `px-4 py-1.5 rounded-full text-sm font-black transition-all ${lang === 'zh' ? 'bg-red-600 text-white shadow-md' : 'text-gray-500 hover:bg-gray-100'}`;
-            if(document.getElementById('btn-en')) document.getElementById('btn-en').className = `px-4 py-1.5 rounded-full text-sm font-black transition-all ${lang === 'en' ? 'bg-red-600 text-white shadow-md' : 'text-gray-500 hover:bg-gray-100'}`;
-            updateUI();
         }
 
         const bFlt = document.getElementById('brand-filter'), lFlt = document.getElementById('location-filter'), uSlt = document.getElementById('user-select');
