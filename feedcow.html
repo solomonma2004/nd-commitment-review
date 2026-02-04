@@ -24,9 +24,11 @@
         }
         .rank-badge { display: flex; align-items: center; justify-content: center; font-weight: 900; box-shadow: 0 2px 4px rgba(0,0,0,0.3); z-index: 50; }
         .brand-badge { font-size: 0.65rem; padding: 1px 6px; border-radius: 9999px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
-        .brand-Dermes { background-color: #e0f2fe; color: #0369a1; border: 1px solid #bae6fd; }
-        .brand-Reenex { background-color: #f0fdf4; color: #15803d; border: 1px solid #bbf7d0; }
-        .brand-Elyze { background-color: #fdf4ff; color: #a21caf; border: 1px solid #f5d0fe; }
+        
+        /* 品牌樣式 */
+        .brand-Dermes, .brand-dermes { background-color: #e0f2fe; color: #0369a1; border: 1px solid #bae6fd; }
+        .brand-Reenex, .brand-reenex { background-color: #f0fdf4; color: #15803d; border: 1px solid #bbf7d0; }
+        .brand-Elyze, .brand-elyze { background-color: #fdf4ff; color: #a21caf; border: 1px solid #f5d0fe; }
         
         .tab-active-Dermes { background-color: #0369a1 !important; color: white !important; border-color: #0369a1 !important; }
         .tab-active-Reenex { background-color: #15803d !important; color: white !important; border-color: #15803d !important; }
@@ -42,10 +44,10 @@
         .animate-modal { animation: modalFadeIn 0.2s ease-out forwards; }
     </style>
 </head>
-<body class="pb-6 overflow-x-hidden">
+<body class="pb-6 overflow-x-hidden text-gray-800">
 
     <script>
-        // --- 核心全域配置 ---
+        // --- 核心配置 ---
         window.GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwFLJr6n8QGwaDb-hBjC6xOwd2ANzDyW1b-iInQfQkxZEDDmP1U6F5lJampP6JNWjR6/exec'; 
         window.currentLang = 'zh';
         window.currentRankBrand = 'Dermes';
@@ -84,7 +86,7 @@
                 task4: "Drive ACB to refer friends for $1,888",
                 tLabel1: "Follows", tLabel2: "ACB Owner", tLabel3: "Packets", tLabel4: "Drive ACB",
                 goal: "Goal", maxLevel: "Max Level", feedsToUpgrade: "{n} feeds needed", congrats: "Golden Cow Raised!",
-                noMatch: "No matches", floorRankTitle: "Brand Floor Board", avgWeight: "Avg Weight",
+                noMatch: "No matches", floorRankTitle: "Intelligence Board", avgWeight: "Avg Weight",
                 modalTitle: "Task Legend", modalClose: "Got it", btnExplain: "Legend", distTitle: "Dist",
                 hcLabel: "HC",
                 njAll: "All Staff", njNew: "New Joiner (NJ)", njSenior: "Senior (Non-NJ)",
@@ -139,10 +141,11 @@
         <img src="https://i.postimg.cc/dVZ3Wyrh/Whats-App-Image-2026-01-16-at-13-05-41.jpg" alt="Poster" class="w-full h-auto block">
     </div>
 
-    <div class="relative w-screen ml-[calc(-50vw+50%)] shadow-2xl overflow-hidden bg-red-900 group flex items-center justify-center py-6 border-b-4 border-yellow-500 text-center md:text-left">
+    <!-- Banner -->
+    <div class="relative w-screen ml-[calc(-50vw+50%)] shadow-2xl overflow-hidden bg-red-900 flex items-center justify-center py-6 border-b-4 border-yellow-500 text-center md:text-left">
         <div class="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-red-800 to-red-950 z-0 opacity-80"></div>
         <div class="relative z-10 w-full max-w-7xl px-4 sm:px-8 md:px-20 text-white flex flex-col md:flex-row items-center justify-between gap-4">
-            <div class="flex-1 flex flex-col justify-center space-y-1">
+            <div class="flex-1 space-y-1">
                 <h2 class="text-4xl sm:text-5xl lg:text-7xl font-black leading-none tracking-tighter">
                     <span id="txt-make">令</span><span class="text-yellow-400">20,000</span><span id="txt-cust">客人</span>
                 </h2>
@@ -150,11 +153,11 @@
                     <p id="txt-banner-slogan" class="text-lg sm:text-xl font-black text-yellow-400">做任務贏取飼料 儲糧養肥牛</p>
                 </div>
             </div>
-            <div id="txt-event-title" class="text-xs sm:text-sm font-black bg-yellow-500 text-red-900 px-4 py-1.5 mt-2 transform -skew-x-12 inline-block shadow-lg">全民養牛 • 玩出豐盛</div>
+            <div id="txt-event-title" class="text-xs sm:text-sm font-black bg-yellow-500 text-red-900 px-4 py-1.5 mt-2 transform -skew-x-12 inline-block shadow-lg uppercase tracking-widest">全民養牛 • 玩出豐盛</div>
         </div>
     </div>
 
-    <!-- Top 10 Ranking -->
+    <!-- Ranking Section -->
     <section class="px-2 pb-12 relative z-0 fence-bg pt-12 shadow-inner text-center">
         <div class="w-full max-w-[98%] mx-auto relative z-10">
            <div class="flex flex-col items-center justify-center gap-4 mb-10">
@@ -166,23 +169,17 @@
            </div>
            <div id="loading-indicator" class="flex flex-col items-center justify-center py-16">
                <div class="w-16 h-16 border-8 border-yellow-400 border-t-transparent rounded-full animate-spin mb-6"></div>
-               <p id="txt-loading" class="text-white text-2xl font-black animate-pulse tracking-widest">正在讀取數據...</p>
+               <p id="txt-loading" class="text-white text-2xl font-black animate-pulse tracking-widest">正在讀取牧場數據...</p>
            </div>
            <div id="leaderboard-grid" class="grid grid-cols-2 md:grid-cols-3 gap-x-3 gap-y-10 px-1 lg:px-16"></div>
         </div>
     </section>
 
-    <!-- Floor Status Board -->
+    <!-- Floor Dashboard -->
     <section class="px-2 py-16 relative z-10 bg-white border-t border-b border-gray-100 shadow-sm overflow-hidden text-center">
         <div class="max-w-4xl mx-auto">
-            <div class="text-center mb-10 px-4">
-                <h3 id="txt-floor-rank-title" class="text-4xl md:text-7xl font-black text-gray-800 flex flex-col items-center justify-center gap-2 leading-tight">實力分佈看板</h3>
-                <button onclick="toggleMissionModal(true)" class="inline-flex items-center gap-2 mt-6 px-6 py-2 rounded-full bg-blue-100 text-blue-600 hover:bg-blue-600 hover:text-white transition-all shadow-sm text-xs font-black">
-                    <i data-lucide="info" class="w-4 h-4"></i> <span id="txt-btn-explain">圖標說明</span>
-                </button>
-            </div>
-
-            <!-- Filter Layers -->
+            <h3 id="txt-floor-rank-title" class="text-4xl md:text-7xl font-black text-gray-800 mb-10 tracking-tight">實力分佈看板</h3>
+            
             <div class="flex justify-center p-1.5 bg-gray-100 rounded-[2.5rem] mb-6 shadow-inner max-w-sm mx-auto border border-gray-200">
                 <button onclick="switchRankBrand('Dermes')" id="tab-Dermes" class="flex-1 py-3 px-2 rounded-[2rem] text-xs md:text-base font-black transition-all tab-active-Dermes shadow-md">Dermes</button>
                 <button onclick="switchRankBrand('Reenex')" id="tab-Reenex" class="flex-1 py-3 px-2 rounded-[2rem] text-xs md:text-base font-black transition-all text-gray-500">Reenex</button>
@@ -192,7 +189,7 @@
             <div class="flex justify-center p-1 bg-gray-200 rounded-xl mb-6 max-w-xs mx-auto border border-gray-300">
                 <button onclick="switchViewLevel('brand')" id="view-brand" class="flex-1 py-2 px-1 rounded-lg text-[10px] font-black transition-all text-gray-500">品牌級</button>
                 <button onclick="switchViewLevel('hub')" id="view-hub" class="flex-1 py-2 px-1 rounded-lg text-[10px] font-black transition-all text-gray-500">區域級</button>
-                <button onclick="switchViewLevel('floor')" id="view-floor" class="flex-1 py-2 px-1 rounded-lg text-[10px] font-black transition-all view-active">樓層級</button>
+                <button onclick="switchViewLevel('floor')" id="view-floor" class="flex-1 py-2 px-1 rounded-lg text-[10px] font-black transition-all view-active shadow-sm">樓層級</button>
             </div>
 
             <div class="flex justify-center mb-10">
@@ -202,38 +199,10 @@
                         <option value="Y" id="txt-njNew">新人 (NJ)</option>
                         <option value="N" id="txt-njSenior">舊人 (Non-NJ)</option>
                     </select>
-                    <i data-lucide="chevron-down" class="w-3 h-3 ml-2 text-gray-400 pointer-events-none"></i>
                 </div>
             </div>
 
             <div id="combined-floor-content" class="space-y-4 px-1 min-h-[400px]"></div>
-        </div>
-    </section>
-
-    <!-- Legend Modal -->
-    <div id="mission-modal" class="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md hidden" onclick="toggleMissionModal(false)">
-        <div class="bg-white rounded-[3rem] w-full max-sm p-10 shadow-2xl animate-modal border-2 border-blue-50" onclick="event.stopPropagation()">
-            <div class="flex justify-between items-center mb-6"><h4 id="txt-modal-title" class="text-xl font-black text-gray-800">任務說明</h4><button onclick="toggleMissionModal(false)" class="text-gray-400 hover:text-red-500"><i data-lucide="x-circle" class="w-10 h-10"></i></button></div>
-            <div id="modal-tasks-container" class="space-y-5 text-left"></div>
-            <button onclick="toggleMissionModal(false)" id="txt-modal-close" class="w-full mt-10 py-5 bg-blue-600 text-white rounded-2xl text-xl font-black shadow-xl">我知道了</button>
-        </div>
-    </div>
-
-    <!-- Tiers & Evolution -->
-    <section class="px-3 py-16 relative z-10 bg-[#FFF3E0]">
-        <div class="max-w-lg mx-auto">
-             <div class="mb-10 shadow-xl rounded-3xl overflow-hidden border-4 border-[#8D6E63] bg-white relative">
-                 <h4 class="font-black text-[#5D4037] text-xl p-4 bg-[#FFECB3] border-b-2 border-[#8D6E63] flex items-center justify-center gap-3 uppercase"><i data-lucide="award" class="w-6 h-6 text-yellow-700"></i> 等級與獎項</h4>
-                 <div id="tier-list-container" class="divide-y divide-gray-100 text-left"></div>
-             </div>
-             <div class="bg-white rounded-[2rem] p-8 shadow-xl border-4 border-orange-200">
-                 <h4 class="font-black text-orange-900 text-xl mb-6 flex items-center gap-3 border-b-2 border-orange-100 pb-3 text-left"><i data-lucide="flame" class="w-6 h-6 text-red-500"></i> 飼料獲取攻略</h4>
-                 <div id="tasks-container" class="grid grid-cols-2 gap-3 text-left"></div>
-                 <div class="mt-8 bg-orange-50 rounded-2xl p-4 text-center border border-orange-100 flex justify-around">
-                    <div class="flex flex-col"><span class="text-[10px] text-orange-800 font-bold uppercase">起始體重</span><span class="text-xl font-black text-red-600">300kg</span></div>
-                    <div class="flex flex-col"><span class="text-[10px] text-orange-800 font-bold uppercase">成長換算</span><span class="text-xl font-black text-orange-700">1份 = +5kg</span></div>
-                 </div>
-             </div>
         </div>
     </section>
 
@@ -246,25 +215,57 @@
                  <select id="location-filter" class="block w-full px-4 py-3 border-2 border-gray-200 rounded-2xl text-base bg-gray-50 focus:border-red-500 font-black appearance-none"><option value="">所有樓層</option></select>
              </div>
              <div class="relative mb-8"><select id="user-select" class="block w-full px-5 py-4 border-2 border-red-100 rounded-[1.5rem] bg-white focus:border-red-500 font-black shadow-lg appearance-none"></select></div>
-             <div id="user-card" class="bg-[#FFF8E1] rounded-[2rem] p-5 border-4 border-[#8D6E63] hidden shadow-xl relative animate-modal text-left">
-                <div class="flex items-start gap-4 mb-4 relative z-10 text-left"><div class="w-24 h-18 cow-image-container border-2 border-white shadow-md shrink-0"><img id="card-cow-img" src="" alt="Cow"></div><div class="flex-1 min-w-0"><div class="flex justify-between items-start mb-1"><h3 id="card-name" class="text-2xl font-black text-[#3E2723] truncate">姓名</h3><span id="card-rank" class="bg-yellow-400 text-yellow-900 px-2 py-0.5 rounded-lg text-sm font-black shadow-md"># -</span></div><div class="flex gap-1 mb-2"><span id="card-brand" class="brand-badge text-[8px]">BRAND</span><span id="card-location" class="bg-[#8D6E63] text-white px-2 py-0.5 rounded-full text-[8px] font-black uppercase shadow-sm">LOC</span></div><div class="flex items-baseline gap-2"><span id="card-weight" class="text-3xl font-black text-red-600 leading-none">0kg</span><span id="card-level-title" class="text-[10px] font-black text-[#8D6E63] uppercase truncate">等級</span></div></div></div>
-                <div id="unlocked-reward-panel" class="bg-yellow-50 rounded-xl p-2.5 border-2 border-yellow-200 mb-4 flex items-center gap-3 shadow-inner"><div class="w-8 h-8 bg-yellow-400 rounded-lg flex items-center justify-center shrink-0 shadow-sm"><i data-lucide="gift" class="w-4 h-4 text-white"></i></div><div class="flex-1 min-w-0"><div id="card-reward-name" class="text-sm font-black text-gray-800 leading-tight">Reward</div></div></div>
-                <div class="bg-white rounded-xl p-3 border-2 border-[#FFE082] mb-4 shadow-sm relative text-center"><div class="flex justify-between text-[10px] font-black text-[#5D4037] mb-1"><span>PROGRESS</span><span id="card-next-level" class="text-red-500 italic uppercase font-black">GOAL</span></div><div class="w-full bg-gray-100 rounded-full h-1.5 overflow-hidden"><div id="card-progress-bar" class="bg-green-500 h-full"></div></div></div>
+             
+             <!-- 個人卡片 (修復 ID 與顯示邏輯) -->
+             <div id="user-card" class="bg-[#FFF8E1] rounded-[2rem] p-5 border-4 border-[#8D6E63] hidden shadow-xl relative animate-modal text-left overflow-hidden">
+                <div class="flex items-start gap-4 mb-4 relative z-10 text-left">
+                    <div class="w-24 h-18 cow-image-container border-2 border-white shadow-md shrink-0"><img id="card-cow-img" src="" alt="Cow"></div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex justify-between items-start mb-1"><h3 id="card-name" class="text-2xl font-black text-[#3E2723] truncate tracking-tighter">姓名</h3><span id="card-rank" class="bg-yellow-400 text-yellow-900 px-2 py-0.5 rounded-lg text-sm font-black shadow-md border-2 border-white"># -</span></div>
+                        <div class="flex gap-1 mb-2"><span id="card-brand" class="brand-badge text-[8px]">BRAND</span><span id="card-location" class="bg-[#8D6E63] text-white px-2 py-0.5 rounded-full text-[8px] font-black uppercase shadow-sm">LOC</span></div>
+                        <div class="flex items-baseline gap-2"><span id="card-weight" class="text-3xl font-black text-red-600 leading-none">0kg</span><span id="card-level-title" class="text-[10px] font-black text-[#8D6E63] uppercase truncate">等級</span></div>
+                    </div>
+                </div>
+                <div id="unlocked-reward-panel" class="bg-yellow-50/95 rounded-xl p-3 border-2 border-yellow-200 mb-4 flex items-center gap-3 shadow-inner">
+                    <div class="w-8 h-8 bg-yellow-400 rounded-lg flex items-center justify-center shrink-0 shadow-sm"><i data-lucide="gift" class="w-4 h-4 text-white"></i></div>
+                    <div class="flex-1 min-w-0">
+                         <div id="card-reward-name" class="text-sm font-black text-gray-800 leading-tight">Reward Info</div>
+                    </div>
+                </div>
+                <div class="bg-white rounded-xl p-3 border-2 border-[#FFE082] mb-4 shadow-sm relative text-center">
+                    <div class="flex justify-between text-[10px] font-black text-[#5D4037] mb-1"><span>PROGRESS</span><span id="card-next-level" class="text-red-500 italic uppercase font-black">GOAL</span></div>
+                    <div class="w-full bg-gray-100 rounded-full h-1.5 overflow-hidden"><div id="card-progress-bar" class="bg-green-500 h-full"></div></div>
+                    <p id="card-diff-text" class="text-[9px] text-center text-gray-400 mt-1 font-bold italic">努力中...</p>
+                </div>
                 <div class="border-t-2 border-[#D7CCC8] pt-4 border-dashed text-center"><div id="card-tasks-grid" class="grid grid-cols-2 gap-2 text-[10px]"></div></div>
              </div>
          </div>
     </section>
 
+    <!-- Tiers & Guides -->
+    <section class="px-3 py-16 relative z-10 bg-[#FFF3E0]">
+        <div class="max-w-lg mx-auto">
+             <div class="mb-10 shadow-xl rounded-3xl overflow-hidden border-4 border-[#8D6E63] bg-white relative">
+                 <h4 class="font-black text-[#5D4037] text-xl p-4 bg-[#FFECB3] border-b-2 border-[#8D6E63] flex items-center justify-center gap-3 uppercase"><i data-lucide="award" class="w-6 h-6 text-yellow-700"></i> 等級與獎項</h4>
+                 <div id="tier-list-container" class="divide-y divide-gray-100 text-left"></div>
+             </div>
+        </div>
+    </section>
+
     <footer class="text-center text-gray-400 text-xs py-10 font-bold opacity-60 uppercase tracking-widest">© 2026 Neoderm New Year Event</footer>
 
     <script>
+        // --- 核心邏輯 ---
         function updateUI() {
             if (typeof i18n === 'undefined') return;
             const lang = window.i18n[window.currentLang];
             
             document.querySelectorAll("[id^='txt-']").forEach(el => {
                 const key = el.id.replace('txt-', '');
-                if (lang[key]) el.textContent = lang[key];
+                if (lang[key]) {
+                    if (el.id === 'txt-floor-rank-title') el.innerHTML = `<i data-lucide="shield-check" class="w-8 h-8 md:w-16 md:h-16 text-blue-600"></i> ${lang[key]}`;
+                    else el.textContent = lang[key];
+                }
             });
 
             document.getElementById('txt-njAll').textContent = lang.njAll;
@@ -274,14 +275,7 @@
             document.getElementById('view-hub').textContent = lang.viewHub;
             document.getElementById('view-floor').textContent = lang.viewFloor;
 
-            // Modal Legend
-            const modalCont = document.getElementById('modal-tasks-container');
-            if(modalCont) {
-                const taskList = [{ icon: "👀", label: "Task 1", text: lang.task1 }, { icon: "🏪", label: "Task 2", text: lang.task2 }, { icon: "🧧", label: "Task 3", text: lang.task3 }, { icon: "🤝", label: "Task 4", text: lang.task4 }];
-                modalCont.innerHTML = taskList.map(t => `<div class="flex items-start gap-4 p-4 rounded-3xl bg-orange-50/50 border border-orange-100 text-left"><span class="text-3xl">${t.icon}</span><div><div class="text-[10px] text-orange-600 font-black uppercase mb-0.5">${t.label}</div><div class="text-sm font-bold text-gray-700 leading-tight text-left">${t.text}</div></div></div>`).join('');
-            }
-
-            // Condensed Tiers with Updated SOGO logic
+            // Condensed Tiers with Bonus Logic Text
             const tl = document.getElementById('tier-list-container');
             if(tl) {
                 tl.innerHTML = [...window.MILESTONES].reverse().map(m => {
@@ -290,28 +284,8 @@
                         const condition = m.bonusThreshold ? lang.bonusCond.replace('{w}', m.bonusThreshold) : "";
                         bonusTxt = `<div class="text-[9px] font-black text-red-600 mt-1 flex items-start gap-1"><i data-lucide="sparkles" class="w-2.5 h-2.5 shrink-0 mt-0.5"></i> <span>若進入前 ${m.bonusRank} 名 ${condition}, 加贈 SOGO $${m.bonusValue} 現金券</span></div>`;
                     }
-                    return `
-                    <div class="bg-white p-3 border-b border-gray-100 last:border-0 flex items-center gap-4 transition-all hover:bg-gray-50">
-                        <div class="w-12 h-10 rounded overflow-hidden shrink-0 bg-gray-50 border border-gray-100 shadow-sm flex items-center justify-center">
-                            <img src="${m.img}" class="w-full h-full object-contain ${m.min < 500 ? 'grayscale opacity-60' : ''}">
-                        </div>
-                        <div class="flex-1 min-w-0 text-left">
-                            <div class="flex items-center justify-between">
-                                <span class="text-sm font-black text-gray-800 truncate">${m.title[window.currentLang]}</span>
-                                <span class="text-[11px] font-black ${m.min >= 800 ? 'text-yellow-600' : 'text-gray-400'}">${m.min}kg+</span>
-                            </div>
-                            <div class="text-[10px] text-gray-600 italic leading-tight">${m.reward[window.currentLang]}</div>
-                            ${bonusTxt}
-                        </div>
-                    </div>`;
+                    return `<div class="bg-white p-3 border-b border-gray-100 last:border-0 flex items-center gap-4 transition-all hover:bg-gray-50"><div class="w-12 h-10 rounded overflow-hidden shrink-0 bg-gray-50 border border-gray-100 shadow-sm flex items-center justify-center"><img src="${m.img}" class="w-full h-full object-contain ${m.min < 500 ? 'grayscale opacity-60' : ''}"></div><div class="flex-1 min-w-0 text-left"><div class="flex items-center justify-between"><span class="text-sm font-black text-gray-800 truncate">${m.title[window.currentLang]}</span><span class="text-[11px] font-black ${m.min >= 800 ? 'text-yellow-600' : 'text-gray-400'}">${m.min}kg+</span></div><div class="text-[10px] text-gray-600 italic leading-tight">${m.reward[window.currentLang]}</div>${bonusTxt}</div></div>`;
                 }).join('');
-            }
-
-            // Task Grid
-            const tc = document.getElementById('tasks-container');
-            if(tc) {
-                const td = [{ icon: "👀", title: lang.task1, reward: "x1" }, { icon: "🏪", title: lang.task2, reward: "x2" }, { icon: "🧧", title: lang.task3, reward: "x2" }, { icon: "🤝", title: lang.task4, reward: "x3" }];
-                tc.innerHTML = td.map(t => `<div class="flex flex-col gap-2 bg-orange-50/40 p-3 rounded-2xl border border-orange-100 shadow-sm text-left"><div class="flex justify-between items-center"><span class="text-xl">${t.icon}</span><span class="bg-orange-600 text-white px-2 py-0.5 rounded-lg font-black text-[10px]">x${t.reward.replace('x','')}</span></div><div class="text-[10px] font-black text-gray-700 leading-tight h-8 line-clamp-2">${t.title}</div></div>`).join('');
             }
 
             populateFilterOptions();
@@ -417,32 +391,7 @@
                 const next = getNextMilestone(avg);
                 let prg = 100; if(next) prg = Math.min(100, Math.max(0, ((avg - s.min) / (next.min - s.min)) * 100));
 
-                return `
-                <div class="relative flex flex-col gap-4 p-5 pb-4 rounded-[2.5rem] bg-white border ${f.isSummary ? 'border-blue-200 shadow-lg' : 'border-gray-100'} shadow-xl overflow-hidden group text-left">
-                    <div class="strength-bar ${s.barColor}" style="width: ${prg}%"></div>
-                    <div class="flex items-center gap-4 z-10 relative">
-                        <div class="flex flex-col items-center min-w-[45px] shrink-0 text-center">
-                            ${f.isSummary ? `<div class="bg-blue-600 text-white p-2 rounded-full shadow-lg"><i data-lucide="${f.label.length > 5 ? 'award' : 'map-pin'}" class="w-4 h-4"></i></div>` : `<span class="w-10 h-10 flex items-center justify-center font-black rounded-full text-lg ${idx === 0 ? 'bg-yellow-400 text-white shadow-lg border-2 border-white' : 'bg-gray-100 text-gray-400'}">${idx + 1}</span>`}
-                            <span class="font-black text-gray-900 text-[11px] mt-1 uppercase tracking-tighter">${f.label}</span>
-                        </div>
-                        <div class="w-18 h-14 rounded-xl border-2 border-white overflow-hidden bg-white shrink-0 shadow-md flex items-center justify-center"><img src="${s.img}" class="w-full h-full object-contain"></div>
-                        <div class="flex-1 min-w-0">
-                            <div class="text-[8px] font-black uppercase tracking-widest ${f.isSummary ? 'text-blue-600' : 'text-gray-400'}">${f.sub}</div>
-                            <div class="text-[9px] font-black uppercase tracking-widest ${s.color}">${s.title[window.currentLang]}</div>
-                            <div class="text-4xl font-black ${idx === 0 && !f.isSummary ? 'text-orange-600' : 'text-gray-800'} tracking-tighter leading-none">${avg}<span class="text-xs font-bold text-gray-400 uppercase ml-0.5">kg</span></div>
-                        </div>
-                        <div class="flex flex-col gap-1 items-end min-w-[85px] shrink-0 opacity-60 scale-90 origin-right">
-                            <div class="flex gap-1.5"><span class="text-[9px]">👀${f.t1}</span> <span class="text-[9px]">🏪${f.t2}</span></div>
-                            <div class="flex gap-1.5"><span class="text-[9px]">🧧${f.t3}</span> <span class="text-[9px]">🤝${f.t4}</span></div>
-                            <div class="text-[8px] font-black text-gray-300 tracking-tighter">HC:${f.count}</div>
-                        </div>
-                    </div>
-                    <div class="z-10 bg-gray-50 p-1.5 rounded-2xl border border-gray-100">
-                        <div class="w-full h-5 flex rounded-full overflow-hidden bg-gray-200 shadow-inner">
-                            ${f.dist.map((c, i) => c === 0 ? '' : `<div class="${distColors[i]} h-full border-r border-white/20 last:border-0 flex items-center justify-center transition-all duration-1000 overflow-hidden" style="width: ${(c/f.count)*100}%"><span class="text-[7px] font-black text-white px-0.5 truncate">${milestoneShortNames[i]}: ${c} (${Math.round((c/f.count)*100)}%)</span></div>`).join('')}
-                        </div>
-                    </div>
-                </div>`;
+                return `<div class="relative flex flex-col gap-4 p-5 pb-4 rounded-[2.5rem] bg-white border ${f.isSummary ? 'border-blue-200 shadow-lg' : 'border-gray-100'} shadow-xl overflow-hidden group text-left"><div class="strength-bar ${s.barColor}" style="width: ${prg}%"></div><div class="flex items-center gap-4 z-10 relative"><div class="flex flex-col items-center min-w-[45px] shrink-0 text-center">${f.isSummary ? `<div class="bg-blue-600 text-white p-2 rounded-full shadow-lg"><i data-lucide="${f.label.length > 5 ? 'award' : 'map-pin'}" class="w-4 h-4"></i></div>` : `<span class="w-10 h-10 flex items-center justify-center font-black rounded-full text-lg ${idx === 0 ? 'bg-yellow-400 text-white shadow-lg border-2 border-white' : 'bg-gray-100 text-gray-400'}">${idx + 1}</span>`}<span class="font-black text-gray-900 text-[11px] mt-1 uppercase tracking-tighter">${f.label}</span></div><div class="w-18 h-14 rounded-xl border-2 border-white overflow-hidden bg-white shrink-0 shadow-md flex items-center justify-center"><img src="${s.img}" class="w-full h-full object-contain"></div><div class="flex-1 min-w-0"><div class="text-[8px] font-black uppercase tracking-widest ${f.isSummary ? 'text-blue-600' : 'text-gray-400'}">${f.sub}</div><div class="text-[9px] font-black uppercase tracking-widest ${s.color}">${s.title[window.currentLang]}</div><div class="text-4xl font-black ${idx === 0 && !f.isSummary ? 'text-orange-600' : 'text-gray-800'} tracking-tighter leading-none">${avg}<span class="text-xs font-bold text-gray-400 uppercase ml-0.5">kg</span></div></div><div class="flex flex-col gap-1 items-end min-w-[85px] shrink-0 opacity-60 scale-90 origin-right"><div class="flex gap-1.5"><span class="text-[9px]">👀${f.t1}</span> <span class="text-[9px]">🏪${f.t2}</span></div><div class="flex gap-1.5"><span class="text-[9px]">🧧${f.t3}</span> <span class="text-[9px]">🤝${f.t4}</span></div><div class="text-[8px] font-black text-gray-300 tracking-tighter">HC:${f.count}</div></div></div><div class="z-10 bg-gray-50 p-1.5 rounded-2xl border border-gray-100"><div class="w-full h-5 flex rounded-full overflow-hidden bg-gray-200 shadow-inner">${f.dist.map((c, i) => c === 0 ? '' : `<div class="${distColors[i]} h-full border-r border-white/20 last:border-0 flex items-center justify-center transition-all duration-1000 overflow-hidden" style="width: ${(c/f.count)*100}%"><span class="text-[7px] font-black text-white px-0.5 truncate">${milestoneShortNames[i]}: ${c} (${Math.round((c/f.count)*100)}%)</span></div>`).join('')}</div></div></div>`;
             }).join('') : `<p class="text-gray-400 text-xs italic text-center py-20">沒有數據。</p>`;
             lucide.createIcons(); 
         }
@@ -450,9 +399,9 @@
         function populateFilterOptions() {
             const bS = document.getElementById('brand-filter'), lS = document.getElementById('location-filter');
             if(!lS || !bS) return;
-            const b = bS.value, prefix = b === 'Dermes' ? 'D' : b === 'Reenex' ? 'R' : b === 'Elyze' ? 'E' : null, cV = lS.value;
+            const b = bS.value, bPM = { 'Dermes': 'D', 'Reenex': 'R', 'Elyze': 'E' }, p = bPM[b], cV = lS.value;
             let locs = [...new Set(window.USERS.map(u => u.location))].filter(l => l).sort();
-            if (prefix) locs = locs.filter(loc => loc.toUpperCase().startsWith(prefix));
+            if (p) locs = locs.filter(loc => loc.toUpperCase().startsWith(p));
             lS.innerHTML = `<option value="">所有樓層</option>`;
             locs.forEach(loc => { const opt = document.createElement('option'); opt.value = loc; opt.textContent = loc; lS.appendChild(opt); });
             if (locs.includes(cV)) lS.value = cV;
@@ -473,6 +422,8 @@
             const user = window.USERS.find(u => u.id == userId);
             if (!user) return;
             const uCard = document.getElementById('user-card');
+            if(!uCard) return;
+
             const status = getCowStatus(user.weight);
             const usersInSameTier = window.USERS.filter(u => getCowStatus(u.weight).min === status.min).sort((a, b) => b.weight - a.weight);
             const tierRank = usersInSameTier.findIndex(u => u.id == userId) + 1;
@@ -482,12 +433,11 @@
             document.getElementById('card-name').textContent = user.name;
             document.getElementById('card-rank').textContent = `# ${rank}`;
             document.getElementById('card-weight').textContent = `${user.weight}kg`;
-            document.getElementById('card-feeds').textContent = `${user.feeds}${window.currentLang === 'zh' ? '份' : ''}`;
             document.getElementById('card-level-title').textContent = status.title[window.currentLang];
-            const cBrand = document.getElementById('card-brand'); if(cBrand) { cBrand.textContent = user.brand; cBrand.className = `brand-badge brand-${user.brand} text-[9px]`; }
+            const cBrand = document.getElementById('card-brand'); if(cBrand) { cBrand.textContent = user.brand; cBrand.className = `brand-badge brand-${user.brand.toLowerCase()} text-[9px]`; }
             document.getElementById('card-location').textContent = user.location;
             
-            const cardTasksGrid = document.getElementById('card-tasks-grid'); if(cardTasksGrid) cardTasksGrid.innerHTML = [{ label: lang.tLabel1, count: user.task1 }, { label: lang.tLabel2, count: user.task2 }, { label: lang.tLabel3, count: user.task3 }, { label: lang.tLabel4, count: user.task4 }].map(t => `<div class="bg-white p-2 rounded border border-[#D7CCC8] flex justify-between items-center shadow-sm"><span class="text-[#5D4037] font-black">${t.label}</span><span class="font-black text-white bg-[#8D6E63] px-2 py-0.5 rounded-full">${t.count}</span></div>`).join('');
+            const cardTasksGrid = document.getElementById('card-tasks-grid'); if(cardTasksGrid) cardTasksGrid.innerHTML = [{ label: lang.tLabel1, count: user.task1 }, { label: lang.tLabel2, count: user.task2 }, { label: lang.tLabel3, count: user.task3 }, { label: lang.tLabel4, count: user.task4 }].map(t => `<div class="bg-white p-2 rounded border border-[#D7CCC8] flex justify-between items-center shadow-sm text-left"><span class="text-[#5D4037] font-black">${t.label}</span><span class="font-black text-white bg-[#8D6E63] px-2 py-0.5 rounded-full">${t.count}</span></div>`).join('');
             document.getElementById('card-cow-img').src = status.img;
             
             const rName = document.getElementById('card-reward-name');
@@ -504,7 +454,9 @@
 
             const nextEl = document.getElementById('card-next-level'), prgEl = document.getElementById('card-progress-bar'), diffEl = document.getElementById('card-diff-text');
             if (next) { if(nextEl) nextEl.textContent = `${lang.goal}: ${next.title[window.currentLang]}`; const prg = Math.min(100, Math.max(0, ((user.weight - status.min) / (next.min - status.min)) * 100)); if(prgEl) prgEl.style.width = `${prg}%`; const feedsLeft = Math.round((next.min - user.weight) / 5); if(diffEl) diffEl.innerHTML = lang.feedsToUpgrade.replace('{n}', `<span class="font-black text-red-600">${feedsLeft}</span>`); } else { if(nextEl) nextEl.textContent = lang.maxLevel; if(prgEl) prgEl.style.width = "100%"; if(diffEl) diffEl.textContent = lang.congrats; }
+            
             uCard.classList.remove('hidden');
+            lucide.createIcons(); // 確保卡片內的 icon 被渲染
         }
 
         async function fetchLeaderboardData() {
@@ -513,11 +465,13 @@
                 const res = await fetch(window.GOOGLE_SCRIPT_URL);
                 const data = await res.json();
                 window.USERS = data.map(item => {
-                    const stats = calculateStats(parseInt(getProp(item, ["task1"]))||0, parseInt(getProp(item, ["task2"]))||0, parseInt(getProp(item, ["task3"]))||0, parseInt(getProp(item, ["task4"]))||0);
-                    return { id: parseInt(getProp(item, ["id"])) || 0, name: getProp(item, ["name"]), brand: getProp(item, ["brand"]), location: getProp(item, ["location"]), task1: parseInt(getProp(item, ["task1"]))||0, task2: parseInt(getProp(item, ["task2"]))||0, task3: parseInt(getProp(item, ["task3"]))||0, task4: parseInt(getProp(item, ["task4"]))||0, feeds: stats.totalFeeds, weight: stats.weight, nj: getProp(item, ["nj"]) };
+                    const nj = getProp(item, ["nj", "NJ"]); // 修正 NJ 識別
+                    const t1 = parseInt(getProp(item, ["task1"]))||0, t2 = parseInt(getProp(item, ["task2"]))||0, t3 = parseInt(getProp(item, ["task3"]))||0, t4 = parseInt(getProp(item, ["task4"]))||0;
+                    const stats = calculateStats(t1, t2, t3, t4);
+                    return { id: parseInt(getProp(item, ["id"])) || 0, name: getProp(item, ["name"]), brand: getProp(item, ["brand"]), location: getProp(item, ["location"]), task1: t1, task2: t2, task3: t3, task4: t4, feeds: stats.totalFeeds, weight: stats.weight, nj: nj };
                 }).filter(u => u.name).sort((a, b) => b.weight - a.weight);
                 updateUI(); 
-            } catch (error) { if(loading) loading.innerHTML = `<p class="text-red-500 font-black">讀取失敗。</p>`; } finally { if (loading) loading.classList.add('hidden'); }
+            } catch (error) { console.error("Fetch error:", error); if(loading) loading.innerHTML = `<p class="text-red-500 font-black px-6 text-sm italic text-center">數據讀取失敗。</p>`; } finally { if (loading) loading.classList.add('hidden'); }
         }
 
         function renderLeaderboard() {
@@ -525,10 +479,10 @@
             if(!grid) return; grid.innerHTML = ''; 
             window.USERS.slice(0, 10).forEach((user, index) => {
                 const s = getCowStatus(user.weight), rank = index + 1;
-                let rs = rank === 1 ? "bg-yellow-400 text-white w-10 h-10 text-xl border-4 shadow-lg" : rank <= 3 ? "bg-gray-300 text-white w-8 h-8 border-2 shadow-md" : "bg-white text-gray-600 w-6 h-6 border shadow-sm text-xs";
+                let rs = rank === 1 ? "bg-yellow-400 text-white w-10 h-10 text-xl border-4 border-white shadow-lg" : rank <= 3 ? "bg-gray-300 text-white w-8 h-8 text-base border-2 border-white shadow-md" : "bg-white text-gray-600 w-6 h-6 text-xs border border-gray-200 shadow-sm";
                 const card = document.createElement('div');
-                card.className = "relative flex flex-col items-center";
-                card.innerHTML = `<div class="cow-image-container mb-2 transition-all relative shadow-2xl"><img src="${s.img}" alt="${s.title[window.currentLang]}"><div class="absolute top-2 left-2 rounded-full flex items-center justify-center font-black rank-badge ${rs}">${rank}</div><div class="absolute bottom-2 right-2 bg-white/95 px-3 py-1 rounded text-sm font-black text-red-600 shadow-md">${user.weight}kg</div></div><div class="bg-white/95 rounded-xl p-3 shadow-xl border-2 text-center w-full"><div class="text-[13px] font-black text-gray-800 truncate">${user.name}</div><div class="flex justify-center gap-1 mt-1"><span class="brand-badge brand-${user.brand} scale-75">${user.brand}</span><span class="bg-gray-100 text-gray-500 text-[9px] px-2 rounded-full font-black flex items-center">${user.location}</span></div><div class="text-[10px] font-black ${s.color}">${s.title[window.currentLang]}</div></div>`;
+                card.className = "relative flex flex-col items-center group";
+                card.innerHTML = `<div class="cow-image-container mb-2 transition-all duration-300 relative shadow-2xl"><img src="${s.img}" alt="${s.title[window.currentLang]}" onerror="this.src='https://placehold.co/640x480?text=Loading';"><div class="absolute top-2 left-2 rounded-full flex items-center justify-center font-black rank-badge ${rs}">${rank}</div><div class="absolute bottom-2 right-2 bg-white/95 px-3 py-1 rounded text-sm font-black text-red-600 shadow-md ring-1 ring-red-100">${user.weight}kg</div></div><div class="bg-white/95 backdrop-blur-sm rounded-xl p-3 shadow-xl border-2 ${rank <= 3 ? 'border-yellow-200' : 'border-white'} text-center w-full relative z-30"><div class="text-[13px] font-black text-gray-800 truncate tracking-tighter leading-tight">${user.name}</div><div class="flex justify-center gap-1 mt-1 mb-1"><span class="brand-badge brand-${user.brand.toLowerCase()} scale-90">${user.brand}</span><span class="bg-gray-100 text-gray-500 text-[10px] px-2 rounded-full font-black flex items-center">${user.location}</span></div><div class="text-[10px] font-black tracking-tighter leading-tight ${s.color}">${s.title[window.currentLang]}</div></div>`;
                 grid.appendChild(card);
             });
         }
