@@ -126,7 +126,7 @@
 
         const BRANDS = ["Dermes", "Reenex", "Elyze"]; // Defined globally
         const TRACK_TIERS = ["基本", "入門", "先鋒", "天才", "超級", "極限", "傳奇", "舉世無雙"]; // Defined globally
-        const MILES_RANGES = ["0-20", "20-40", "40-60", "60-80", "80-100", "100+"]; // Defined globally
+        const MILES_RANGES = ["0-9", "10-19", "20-29", "30-39", "40-49", "50+"]; // Defined globally - UPDATED RANGES
 
         // REWARD DATA
         const REWARDS = [
@@ -724,8 +724,9 @@
                     // Check Miles Filter (NEW - Multi Select Logic)
                     if (!trackFilterMiles.includes("ALL")) {
                          const matchesAnyRange = trackFilterMiles.some(range => {
-                             if (range === '100+') {
-                                 return r.sales >= 100;
+                             if (range.endsWith('+')) {
+                                 const min = parseInt(range);
+                                 return r.sales >= min;
                              } else {
                                  const [min, max] = range.split('-').map(Number);
                                  return r.sales >= min && r.sales <= max;
@@ -1138,7 +1139,9 @@
                                         <div className="p-10 bg-slate-900/50 flex flex-col items-center justify-center border-b lg:border-b-0 lg:border-r border-slate-700 relative">
                                             <div className="w-40 h-40 rounded-full bg-slate-800 p-2 mb-6 relative shadow-2xl border-4 border-slate-700 group"><img src={getBrandGif(racer.brand)} className="w-full h-full object-contain rounded-full bg-slate-900" /><div className="absolute -bottom-2 -right-2 bg-yellow-500 text-yellow-900 w-12 h-12 flex items-center justify-center font-black rounded-full border-4 border-slate-800 text-2xl font-racing shadow-lg group-hover:scale-110 transition-transform">#{actualRank}</div></div>
                                             <h2 className="text-3xl font-bold text-center mb-3 text-white tracking-wide">{racer.name}</h2>
-                                            <div className="flex gap-2 mb-6"><span className="px-3 py-1 bg-slate-800 border border-slate-600 rounded-full text-xs text-slate-400 font-bold uppercase tracking-wider">{racer.brand}</span><span className="px-3 py-1 bg-slate-800 border border-slate-600 rounded-full text-xs text-slate-400 font-bold uppercase tracking-wider">{racer.hub}</span><span className="px-3 py-1 bg-white border-2 border-slate-200 rounded-full text-xs text-slate-600 font-bold uppercase tracking-wider shadow-sm">{racer.floor}</span></div>
+                                            <div className="flex gap-2 mb-6"><span className="px-3 py-1 bg-slate-800 border border-slate-600 rounded-full text-xs text-slate-400 font-bold uppercase tracking-wider">{racer.brand}</span><span className="px-3 py-1 bg-slate-800 border border-slate-600 rounded-full text-xs text-slate-400 font-bold uppercase tracking-wider">{racer.hub}</span><span className="px-3 py-1 bg-slate-800 border border-slate-600 rounded-full text-xs text-slate-400 font-bold uppercase tracking-wider">{racer.floor}</span></div>
+                                            
+                                            {/* Achievement Bar */}
                                             <div className="w-full px-6 mb-8">
                                                 <div className="flex justify-between text-xs font-bold text-slate-400 mb-2 uppercase tracking-wider"><span>銷售達成率</span><div className="text-right"><span className="block text-lg text-white font-numbers">{breakdown.achievement_pct.toFixed(0)}%</span><span className="text-[10px] opacity-60">{formatCurrency(breakdown.actual).replace('HK$', '$')} / {formatCurrency(breakdown.target).replace('HK$', '$')}</span></div></div>
                                                 <div className="w-full bg-slate-700 h-3 rounded-full overflow-hidden border border-slate-600"><div className={`h-full ${trackLevel.bg.replace('bg-', 'bg-')}`} style={{ width: `${Math.min(breakdown.achievement_pct, 100)}%`, background: 'linear-gradient(90deg, #00f3ff, #bc13fe)' }}></div></div>
